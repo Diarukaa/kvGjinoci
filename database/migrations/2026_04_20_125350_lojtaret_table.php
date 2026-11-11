@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id()->primary();
             $table->string('emri');
             $table->string('mbiemri');
+            $table->string('pozicioni');
             $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->date('dataELindjes');
