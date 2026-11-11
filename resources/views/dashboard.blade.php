@@ -121,6 +121,19 @@
             </a>
         </div>
 
+        <div class="card">
+            <h3>Player Performance</h3>
+
+            <p>
+                Renditja, piket dhe performanca
+                individuale e volejbollisteve.
+            </p>
+
+            <a href="{{ route('performance.index') }}">
+                Shiko Performancen
+            </a>
+        </div>
+
     </div>
 </main>
 

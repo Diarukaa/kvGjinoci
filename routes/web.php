@@ -9,6 +9,7 @@ use App\Http\Controllers\EkipiController;
 use App\Http\Controllers\NdeshjaController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\StatistikaLojtaritController;
+use App\Http\Controllers\PlayerPerformanceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -55,3 +56,7 @@ Route::delete(
     [StatistikaLojtaritController::class, 'destroy']
 )->name('statistikat-lojtareve.destroy');
 
+Route::get('/performance', [
+    PlayerPerformanceController::class,
+    'index'
+])->name('performance.index');
