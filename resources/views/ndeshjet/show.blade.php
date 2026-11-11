@@ -77,6 +77,68 @@
             </tbody>
         </table>
 
+
+        @if($ndeshja->statusi === 'Perfunduar')
+
+            <h2>Statistikat Individuale</h2>
+
+            <p>
+                <a href="{{ route('statistikat-lojtareve.create', $ndeshja) }}">
+                    + Shto / Edito Statistikat
+                </a>
+            </p>
+
+            <div style="overflow-x:auto">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Volejbollistja</th>
+                        <th>Kills</th>
+                        <th>Aces</th>
+                        <th>Blocks</th>
+                        <th>Digs</th>
+                        <th>Pike</th>
+                        <th>Veprimet</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @forelse($ndeshja->statistikat as $stat)
+                        <tr>
+                            <td>
+                                {{ $stat->lojtar->emri }}
+                                {{ $stat->lojtar->mbiemri }}
+                            </td>
+                            <td>{{ $stat->kills }}</td>
+                            <td>{{ $stat->aces }}</td>
+                            <td>{{ $stat->blocks }}</td>
+                            <td>{{ $stat->digs }}</td>
+                            <td>
+                                <strong>{{ $stat->piket }}</strong>
+                            </td>
+                            <td>
+                                <form method="POST"
+                                      action="{{ route('statistikat-lojtareve.destroy', [$ndeshja, $stat]) }}"
+                                      onsubmit="return confirm('A je i sigurt?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit">Fshi</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7">
+                                Nuk ka statistika individuale.
+                            </td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+        @endif
+
+
         <h3>
             @if($ndeshja->setet_tona > $ndeshja->setet_kundershtarit)
                 Fitore e KV Gjinocit!

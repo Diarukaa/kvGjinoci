@@ -8,6 +8,7 @@ use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\EkipiController;
 use App\Http\Controllers\NdeshjaController;
 use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\StatistikaLojtaritController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,3 +38,20 @@ Route::resource('ndeshjet', NdeshjaController::class)
 
 Route::get('/statistics', [StatisticsController::class, 'index'])
     ->name('statistics.index');
+
+
+Route::get(
+    '/ndeshjet/{ndeshja}/statistikat/create',
+    [StatistikaLojtaritController::class, 'create']
+)->name('statistikat-lojtareve.create');
+
+Route::post(
+    '/ndeshjet/{ndeshja}/statistikat',
+    [StatistikaLojtaritController::class, 'store']
+)->name('statistikat-lojtareve.store');
+
+Route::delete(
+    '/ndeshjet/{ndeshja}/statistikat/{statistika}',
+    [StatistikaLojtaritController::class, 'destroy']
+)->name('statistikat-lojtareve.destroy');
+

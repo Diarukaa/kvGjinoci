@@ -25,4 +25,12 @@ class Lojtar extends Model
     {
         return $this->belongsTo(Ekipi::class, 'ekipi_id');
     }
+
+    public function statistikat()
+    {
+        return $this->hasMany(
+            StatistikaLojtarit::class,
+            'lojtar_id'
+        );
+    }
 }

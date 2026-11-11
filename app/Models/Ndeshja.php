@@ -33,4 +33,12 @@ class Ndeshja extends Model
         return $this->hasMany(Seti::class, 'ndeshja_id')
             ->orderBy('numri_setit');
     }
+
+    public function statistikat()
+    {
+        return $this->hasMany(
+            StatistikaLojtarit::class,
+            'ndeshja_id'
+        );
+    }
 }

@@ -60,7 +60,11 @@ class NdeshjaController extends Controller
 
     public function show(Ndeshja $ndeshja)
     {
-        $ndeshja->load(['ekipi', 'setet']);
+        $ndeshja->load([
+            'ekipi',
+            'setet',
+            'statistikat.lojtar'
+        ]);
 
         return view('ndeshjet.show', compact('ndeshja'));
     }
