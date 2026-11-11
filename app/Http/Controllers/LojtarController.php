@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ekipi;
 use App\Models\Lojtar;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -33,7 +34,9 @@ class LojtarController extends Controller
 
     public function create()
     {
-        return view('lojtar.create');
+        $ekipet = Ekipi::orderBy('emri')->get();
+
+        return view('lojtar.create', compact('ekipet'));
     }
 
     public function store(Request $request)
@@ -60,6 +63,7 @@ class LojtarController extends Controller
                 ]),
             ],
             'gjatesia' => 'nullable|integer|between:100,250',
+            'ekipi_id' => 'nullable|exists:ekipet,id',
         ]);
 
         Lojtar::create($validated);
@@ -75,7 +79,9 @@ class LojtarController extends Controller
 
     public function edit(Lojtar $lojtar)
     {
-        return view('lojtar.edit', compact('lojtar'));
+        $ekipet = Ekipi::orderBy('emri')->get();
+
+        return view('lojtar.edit', compact('lojtar', 'ekipet'));
     }
 
     public function update(Request $request, Lojtar $lojtar)
@@ -103,6 +109,7 @@ class LojtarController extends Controller
                 ]),
             ],
             'gjatesia' => 'nullable|integer|between:100,250',
+            'ekipi_id' => 'nullable|exists:ekipet,id',
         ]);
 
         $lojtar->update($validated);

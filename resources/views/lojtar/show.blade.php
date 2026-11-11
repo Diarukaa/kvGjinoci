@@ -54,6 +54,18 @@
     </div>
 
     <div class="detail">
+        <strong>Ekipi:</strong>
+
+        @if($lojtar->ekipi)
+            <a href="{{ route('ekipet.show', $lojtar->ekipi) }}">
+                {{ $lojtar->ekipi->emri }}
+            </a>
+        @else
+            Pa ekip
+        @endif
+    </div>
+
+    <div class="detail">
         <strong>Vendbanimi:</strong> {{ $lojtar->vendbanimi }}
     </div>
 
@@ -66,6 +78,7 @@
     <a href="{{ route('lojtar.index') }}">
         Kthehu te Lista
     </a>
+
 </div>
 </body>
 </html>

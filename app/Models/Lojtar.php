@@ -18,5 +18,11 @@ class Lojtar extends Model
         'numriFanelles',
         'pozicioni',
         'gjatesia',
+        'ekipi_id'
     ];
+
+    public function ekipi()
+    {
+        return $this->belongsTo(Ekipi::class, 'ekipi_id');
+    }
 }

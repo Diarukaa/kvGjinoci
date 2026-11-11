@@ -17,4 +17,9 @@ class Trajner extends Model
         'vendbanimi',
         'IBAN',
     ];
+
+    public function ekipet()
+    {
+        return $this->hasMany(Ekipi::class, 'trajner_id');
+    }
 }

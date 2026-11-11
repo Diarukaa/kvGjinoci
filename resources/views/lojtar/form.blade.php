@@ -60,4 +60,18 @@
        min="100" max="250"
        value="{{ old('gjatesia', $lojtar->gjatesia ?? '') }}">
 
+
+<label>Ekipi:</label>
+
+<select name="ekipi_id">
+    <option value="">Pa ekip</option>
+
+    @foreach($ekipet as $ekipi)
+        <option value="{{ $ekipi->id }}"
+            @selected(old('ekipi_id', $lojtar->ekipi_id ?? '') == $ekipi->id)>
+            {{ $ekipi->emri }} ({{ $ekipi->kategoria }})
+        </option>
+    @endforeach
+</select>
+
 <button type="submit">Ruaj</button>
