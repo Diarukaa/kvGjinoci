@@ -136,6 +136,19 @@
                 @endforeach
             </select>
 
+            <label>Sezoni:</label>
+
+            <select name="sezoni_id">
+                <option value="">Te gjitha sezonet</option>
+
+                @foreach($sezonet as $sezoni)
+                    <option value="{{ $sezoni->id }}"
+                        @selected((string)$sezoniId === (string)$sezoni->id)>
+                        {{ $sezoni->emri }}
+                    </option>
+                @endforeach
+            </select>
+
             <button type="submit">Filtro</button>
 
             <a href="{{ route('performance.index') }}">
@@ -143,6 +156,7 @@
             </a>
         </form>
     </div>
+
 
     <div class="cards">
         <div class="card">

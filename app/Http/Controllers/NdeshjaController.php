@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sezoni;
 use App\Models\Ekipi;
 use App\Models\Ndeshja;
 use Illuminate\Http\Request;
@@ -23,8 +24,9 @@ class NdeshjaController extends Controller
     public function create()
     {
         $ekipet = Ekipi::orderBy('emri')->get();
+        $sezonet = Sezoni::orderByDesc('data_fillimit')->get();
 
-        return view('ndeshjet.create', compact('ekipet'));
+        return view('ndeshjet.create', compact('ekipet', 'sezonet'));
     }
 
     public function store(Request $request)
@@ -72,11 +74,14 @@ class NdeshjaController extends Controller
     public function edit(Ndeshja $ndeshja)
     {
         $ekipet = Ekipi::orderBy('emri')->get();
+        $sezonet = Sezoni::orderByDesc('data_fillimit')->get();
+
         $ndeshja->load('setet');
 
         return view('ndeshjet.edit', compact(
             'ndeshja',
-            'ekipet'
+            'ekipet',
+            'sezonet'
         ));
     }
 
@@ -139,6 +144,7 @@ class NdeshjaController extends Controller
             'setet.*.numri_setit' => 'required|integer|between:1,5',
             'setet.*.piket_tona' => 'required|integer|between:0,999',
             'setet.*.piket_kundershtarit' => 'required|integer|between:0,999',
+            'sezoni_id' => 'nullable|exists:sezonet,id',
         ]);
 
         if ($data['statusi'] === 'Perfunduar') {

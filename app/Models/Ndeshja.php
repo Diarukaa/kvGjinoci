@@ -17,6 +17,7 @@ class Ndeshja extends Model
         'statusi',
         'setet_tona',
         'setet_kundershtarit',
+        'sezoni_id',
     ];
 
     protected $casts = [
@@ -40,5 +41,10 @@ class Ndeshja extends Model
             StatistikaLojtarit::class,
             'ndeshja_id'
         );
+    }
+
+    public function sezoni()
+    {
+        return $this->belongsTo(Sezoni::class, 'sezoni_id');
     }
 }

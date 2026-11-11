@@ -48,6 +48,10 @@
     <p>Palestra: {{ $ndeshja->palestra }}</p>
     <p>Lokacioni: {{ $ndeshja->lokacioni }}</p>
     <p>Statusi: {{ $ndeshja->statusi }}</p>
+    <p>
+        <strong>Sezoni:</strong>
+        {{ $ndeshja->sezoni?->emri ?? 'Pa sezon' }}
+    </p>
 
     @if($ndeshja->statusi === 'Perfunduar')
         <div class="score">

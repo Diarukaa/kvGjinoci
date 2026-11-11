@@ -6,6 +6,25 @@
     </ul>
 @endif
 
+<label>Sezoni:</label>
+
+<select name="sezoni_id">
+    <option value="">Pa sezon</option>
+
+    @foreach($sezonet as $sezoni)
+        <option value="{{ $sezoni->id }}"
+            @selected(
+                (string) old(
+                    'sezoni_id',
+                    $ndeshja->sezoni_id ?? ''
+                ) === (string) $sezoni->id
+            )>
+            {{ $sezoni->emri }}
+            {{ $sezoni->aktiv ? '(Aktiv)' : '' }}
+        </option>
+    @endforeach
+</select>
+
 <label>Ekipi:</label>
 <select name="ekipi_id" required>
     <option value="">Zgjedh ekipin</option>

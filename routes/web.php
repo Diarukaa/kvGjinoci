@@ -10,6 +10,7 @@ use App\Http\Controllers\NdeshjaController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\StatistikaLojtaritController;
 use App\Http\Controllers\PlayerPerformanceController;
+use App\Http\Controllers\SezoniController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,3 +61,15 @@ Route::get('/performance', [
     PlayerPerformanceController::class,
     'index'
 ])->name('performance.index');
+
+Route::get('/sezonet', [SezoniController::class, 'index'])
+    ->name('sezonet.index');
+
+Route::post('/sezonet', [SezoniController::class, 'store'])
+    ->name('sezonet.store');
+
+Route::put('/sezonet/{sezoni}', [SezoniController::class, 'update'])
+    ->name('sezonet.update');
+
+Route::delete('/sezonet/{sezoni}', [SezoniController::class, 'destroy'])
+    ->name('sezonet.destroy');
