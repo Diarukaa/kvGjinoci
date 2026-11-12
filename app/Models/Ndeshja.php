@@ -47,4 +47,12 @@ class Ndeshja extends Model
     {
         return $this->belongsTo(Sezoni::class, 'sezoni_id');
     }
+
+    public function rezultatiLiges()
+    {
+        return $this->hasOne(
+            NdeshjaLiges::class,
+            'ndeshja_id'
+        );
+    }
 }

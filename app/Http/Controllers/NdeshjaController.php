@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use App\Services\LigaSyncService;
 
 class NdeshjaController extends Controller
 {
@@ -90,9 +91,27 @@ class NdeshjaController extends Controller
         $validated = $this->validateNdeshja($request);
 
         DB::transaction(function () use ($validated, $ndeshja) {
+            $ndeshja = Ndeshja::whereKey($ndeshja->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
             $data = $validated;
             $setet = $data['setet'] ?? [];
+
             unset($data['setet']);
+
+            if ($ndeshja->rezultatiLiges()->exists()) {
+                if (
+                    (int) $data['ekipi_id'] !==
+                    (int) $ndeshja->ekipi_id ||
+                    $data['kundershtari'] !==
+                    $ndeshja->kundershtari
+                ) {
+                    throw ValidationException::withMessages([
+                        'ndeshja' => 'Nuk mund te ndryshosh ekipin ose kundershtarin e nje ndeshjeje te lidhur me ligen.'
+                    ]);
+                }
+            }
 
             $data['setet_tona'] = null;
             $data['setet_kundershtarit'] = null;
@@ -106,14 +125,20 @@ class NdeshjaController extends Controller
             }
 
             $ndeshja->update($data);
+
             $ndeshja->setet()->delete();
 
             if ($data['statusi'] === 'Perfunduar') {
                 $ndeshja->setet()->createMany($setet);
             }
+
+            app(LigaSyncService::class)
+                ->sinkronizo($ndeshja);
+
         });
 
-        return redirect()->route('ndeshjet.index')
+        return redirect()
+            ->route('ndeshjet.index')
             ->with('success', 'Ndeshja u perditesua!');
     }
 

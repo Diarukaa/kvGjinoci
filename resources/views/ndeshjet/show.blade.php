@@ -158,6 +158,56 @@
         Edito
     </a>
 
+
+    @if(session('success'))
+        <p style="color:green">
+            {{ session('success') }}
+        </p>
+    @endif
+
+    @if($errors->any())
+        <ul style="color:red">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
+
+    @if($ndeshja->statusi === 'Perfunduar')
+        <div style="margin:25px 0;
+                padding:20px;
+                background:#f3f5f9;
+                border-radius:10px;">
+
+            <h3>Integrimi me Kampionatin</h3>
+
+            @if($ndeshja->rezultatiLiges)
+
+                <p style="color:green">
+                    Ndeshja eshte e lidhur me kampionatin.
+                </p>
+
+                <a href="{{ route('liga.index',
+                $ndeshja->rezultatiLiges->kampionati_id) }}">
+                    Shiko Klasifikimin
+                </a>
+
+            @else
+
+                <p>
+                    Kjo ndeshje ende nuk eshte
+                    e lidhur me kampionatin.
+                </p>
+
+                <a href="{{ route('ndeshjet.lidh-ligen', $ndeshja) }}">
+                    + Lidh me Kampionatin
+                </a>
+
+            @endif
+
+        </div>
+    @endif
+
     <p>
         <a href="{{ route('ndeshjet.index') }}">
             Kthehu te Ndeshjet

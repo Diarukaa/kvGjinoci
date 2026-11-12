@@ -133,6 +133,14 @@ class NdeshjaLigesController extends Controller
             404
         );
 
+        if ($ndeshja->ndeshja_id !== null) {
+            return redirect()
+                ->route('ndeshjet.edit', $ndeshja->ndeshja_id)
+                ->withErrors([
+                    'ndeshja' => 'Ky rezultat menaxhohet nga ndeshja e KV Gjinocit.'
+                ]);
+        }
+
         $data = $this->validimi(
             $request,
             $kampionati,
@@ -155,6 +163,12 @@ class NdeshjaLigesController extends Controller
             (int) $kampionati->id,
             404
         );
+
+        if ($ndeshja->ndeshja_id !== null) {
+            return back()->withErrors([
+                'ndeshja' => 'Ky rezultat eshte i lidhur me nje ndeshje te KV Gjinocit.'
+            ]);
+        }
 
         $ndeshja->delete();
 

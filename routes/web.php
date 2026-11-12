@@ -14,6 +14,7 @@ use App\Http\Controllers\SezoniController;
 use App\Http\Controllers\KlubiController;
 use App\Http\Controllers\KampionatiController;
 use App\Http\Controllers\NdeshjaLigesController;
+use App\Http\Controllers\NdeshjaLigaSyncController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -105,3 +106,14 @@ Route::delete(
     '/kampionatet/{kampionati}/liga/{ndeshja}',
     [NdeshjaLigesController::class, 'destroy']
 )->name('liga.destroy');
+
+
+Route::get(
+    '/ndeshjet/{ndeshja}/lidh-ligen',
+    [NdeshjaLigaSyncController::class, 'create']
+)->name('ndeshjet.lidh-ligen');
+
+Route::post(
+    '/ndeshjet/{ndeshja}/lidh-ligen',
+    [NdeshjaLigaSyncController::class, 'store']
+)->name('ndeshjet.lidh-ligen.store');

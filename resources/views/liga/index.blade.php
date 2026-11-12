@@ -129,33 +129,42 @@
 
                         <td>{{ $ndeshja->mysafir->emri }}</td>
 
+
                         <td>
                             <div class="actions">
 
-                                <button type="button"
-                                        onclick="document.getElementById(
-                                        'edit-ndeshja-{{ $ndeshja->id }}'
-                                    ).hidden = !document.getElementById(
-                                        'edit-ndeshja-{{ $ndeshja->id }}'
-                                    ).hidden">
-                                    Edito
-                                </button>
+                                @if($ndeshja->ndeshja_id)
 
-                                <form method="POST"
-                                      action="{{ route('liga.destroy', [
-                                          $kampionati,
-                                          $ndeshja
-                                      ]) }}"
-                                      onsubmit="return confirm('A je i sigurt?')">
+                                    <a class="btn"
+                                       href="{{ route('ndeshjet.show',
+                   $ndeshja->ndeshja_id) }}">
+                                        Shiko Ndeshjen
+                                    </a>
 
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button type="submit" class="danger">
-                                        Fshi
+                                    <span style="color:green">
+                Sinkronizuar
+            </span>
+                                @else
+                                    <button type="button"
+                                            onclick="document.getElementById(
+                    'edit-ndeshja-{{ $ndeshja->id }}'
+                ).hidden = !document.getElementById(
+                    'edit-ndeshja-{{ $ndeshja->id }}'
+                ).hidden">Edito
                                     </button>
-                                </form>
+                                    <form method="POST" action="{{ route('liga.destroy', [
+                      $kampionati,
+                      $ndeshja
+                  ]) }}"onsubmit="return confirm('A je i sigurt?')">
 
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit" class="danger">
+                                            Fshi
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </td>
                     </tr>

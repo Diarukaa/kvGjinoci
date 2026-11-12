@@ -15,6 +15,7 @@ class NdeshjaLiges extends Model
         'data_ndeshjes',
         'setet_vendas',
         'setet_mysafir',
+        'ndeshja_id',
     ];
 
     protected $casts = [
@@ -44,6 +45,14 @@ class NdeshjaLiges extends Model
         return $this->belongsTo(
             Klubi::class,
             'klubi_mysafir_id'
+        );
+    }
+
+    public function ndeshja()
+    {
+        return $this->belongsTo(
+            Ndeshja::class,
+            'ndeshja_id'
         );
     }
 }
