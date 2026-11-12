@@ -15,6 +15,7 @@ use App\Http\Controllers\KlubiController;
 use App\Http\Controllers\KampionatiController;
 use App\Http\Controllers\NdeshjaLigesController;
 use App\Http\Controllers\NdeshjaLigaSyncController;
+use App\Http\Controllers\StervitjaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -117,3 +118,6 @@ Route::post(
     '/ndeshjet/{ndeshja}/lidh-ligen',
     [NdeshjaLigaSyncController::class, 'store']
 )->name('ndeshjet.lidh-ligen.store');
+
+Route::resource('stervitjet', StervitjaController::class)
+    ->parameters(['stervitjet' => 'stervitja']);

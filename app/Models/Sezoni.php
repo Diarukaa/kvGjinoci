@@ -33,4 +33,9 @@ class Sezoni extends Model
             'sezoni_id'
         );
     }
+
+    public function stervitjet()
+    {
+        return $this->hasMany(Stervitja::class, 'sezoni_id');
+    }
 }

@@ -30,4 +30,9 @@ class Ekipi extends Model
     {
         return $this->hasMany(Ndeshja::class, 'ekipi_id');
     }
+
+    public function stervitjet()
+    {
+        return $this->hasMany(Stervitja::class, 'ekipi_id');
+    }
 }

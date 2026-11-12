@@ -137,6 +137,7 @@
         <a href="{{ route('sezonet.index') }}">Sezonet</a>
         <a href="{{ route('klubet.index') }}">Klubet</a>
         <a href="{{ route('kampionatet.index') }}">Kampionatet</a>
+        <a href="{{ route('stervitjet.index') }}">Stervitjet</a>
     </nav>
 </header>
 

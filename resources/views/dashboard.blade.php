@@ -152,6 +152,19 @@
             </a>
         </div>
 
+        <div class="card">
+            <h3>Stervitjet</h3>
+
+            <p>
+                Menaxhimi i orarit, trajneret
+                dhe stervitjet e ekipeve.
+            </p>
+
+            <a href="{{ route('stervitjet.index') }}">
+                Menaxho Stervitjet
+            </a>
+        </div>
+
     </div>
 </main>
 

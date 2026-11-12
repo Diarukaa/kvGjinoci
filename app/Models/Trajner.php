@@ -22,4 +22,9 @@ class Trajner extends Model
     {
         return $this->hasMany(Ekipi::class, 'trajner_id');
     }
+
+    public function stervitjet()
+    {
+        return $this->hasMany(Stervitja::class, 'trajner_id');
+    }
 }
