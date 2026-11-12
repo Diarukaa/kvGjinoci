@@ -28,4 +28,12 @@ class Kampionati extends Model
             'klubi_id'
         );
     }
+
+    public function ndeshjet()
+    {
+        return $this->hasMany(
+            NdeshjaLiges::class,
+            'kampionati_id'
+        );
+    }
 }

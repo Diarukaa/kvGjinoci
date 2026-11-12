@@ -55,4 +55,9 @@
         Kthehu te Kampionatet
     </a>
 
+    <a class="btn"
+       href="{{ route('liga.index', $kampionati) }}">
+        Klasifikimi dhe Rezultatet
+    </a>
+
 @endsection

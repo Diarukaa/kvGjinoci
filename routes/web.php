@@ -13,6 +13,7 @@ use App\Http\Controllers\PlayerPerformanceController;
 use App\Http\Controllers\SezoniController;
 use App\Http\Controllers\KlubiController;
 use App\Http\Controllers\KampionatiController;
+use App\Http\Controllers\NdeshjaLigesController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -85,3 +86,22 @@ Route::resource('kampionatet', KampionatiController::class)
     ->parameters(['kampionatet' => 'kampionati'])
     ->only(['index', 'store', 'show', 'update', 'destroy']);
 
+Route::get(
+    '/kampionatet/{kampionati}/liga',
+    [NdeshjaLigesController::class, 'index']
+)->name('liga.index');
+
+Route::post(
+    '/kampionatet/{kampionati}/liga',
+    [NdeshjaLigesController::class, 'store']
+)->name('liga.store');
+
+Route::put(
+    '/kampionatet/{kampionati}/liga/{ndeshja}',
+    [NdeshjaLigesController::class, 'update']
+)->name('liga.update');
+
+Route::delete(
+    '/kampionatet/{kampionati}/liga/{ndeshja}',
+    [NdeshjaLigesController::class, 'destroy']
+)->name('liga.destroy');

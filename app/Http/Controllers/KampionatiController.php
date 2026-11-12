@@ -96,6 +96,30 @@ class KampionatiController extends Controller
             'klubet.*' => 'integer|distinct|exists:klubet,id',
         ]);
 
+        if ($kampionati->ndeshjet()->exists()) {
+            $klubetAktuale = $kampionati->klubet()
+                ->pluck('klubet.id')
+                ->map(fn ($id) => (int) $id);
+
+            $klubetEReja = collect($data['klubet'] ?? [])
+                ->map(fn ($id) => (int) $id);
+
+            if ($klubetAktuale->diff($klubetEReja)->isNotEmpty()) {
+                return back()->withErrors([
+                    'klubet' => 'Nuk mund te largosh klube nga nje kampionat me rezultate.'
+                ]);
+            }
+
+            if (
+                (int) $data['sezoni_id'] !== (int) $kampionati->sezoni_id ||
+                $data['kategoria'] !== $kampionati->kategoria
+            ) {
+                return back()->withErrors([
+                    'kampionati' => 'Nuk mund te ndryshosh sezonin ose kategorine kur ka rezultate.'
+                ]);
+            }
+        }
+
         DB::transaction(function () use ($data, $kampionati) {
             $kampionati->update([
                 'emri' => $data['emri'],
@@ -114,9 +138,16 @@ class KampionatiController extends Controller
 
     public function destroy(Kampionati $kampionati)
     {
+        if ($kampionati->ndeshjet()->exists()) {
+            return back()->withErrors([
+                'kampionati' => 'Ky kampionat ka ndeshje te regjistruara.'
+            ]);
+        }
+
         $kampionati->delete();
 
-        return redirect()->route('kampionatet.index')
+        return redirect()
+            ->route('kampionatet.index')
             ->with('success', 'Kampionati u fshi!');
     }
 }
