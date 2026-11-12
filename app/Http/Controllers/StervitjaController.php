@@ -116,6 +116,26 @@ class StervitjaController extends Controller
             $stervitja
         );
 
+        if ($stervitja->prezencat()->exists()) {
+
+            if (
+                (int) $validated['ekipi_id'] !==
+                (int) $stervitja->ekipi_id
+            ) {
+                return back()->withErrors([
+                    'ekipi_id' =>
+                        'Nuk mund te ndryshosh ekipin kur ka prezenca.'
+                ])->withInput();
+            }
+
+            if ($validated['statusi'] !== 'Perfunduar') {
+                return back()->withErrors([
+                    'statusi' =>
+                        'Stervitja ka prezenca te regjistruara.'
+                ])->withInput();
+            }
+        }
+
         $stervitja->update($validated);
 
         return redirect()

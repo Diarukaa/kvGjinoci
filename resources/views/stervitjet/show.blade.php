@@ -61,6 +61,37 @@
             </a>
         </p>
 
+        @if($stervitja->statusi === 'Perfunduar')
+
+            <hr>
+
+            <h3>Prezenca ne Stervitje</h3>
+
+            <p>
+                Volejbolliste te evidentuara:
+                {{ $stervitja->prezencat()->count() }}
+            </p>
+
+            <p>
+                Prezente:
+                {{ $stervitja->prezencat()
+                    ->where('statusi', 'Prezente')->count() }}
+            </p>
+
+            <p>
+                Mungesa:
+                {{ $stervitja->prezencat()
+                    ->where('statusi', 'Mungon')->count() }}
+            </p>
+
+            <p>
+                <a class="btn"
+                   href="{{ route('prezencat.edit', $stervitja) }}">
+                    Menaxho Prezencen
+                </a>
+            </p>
+        @endif
+
     </div>
 
     <a class="btn"

@@ -79,6 +79,12 @@
         Kthehu te Lista
     </a>
 
+    <p>
+        <a href="{{ route('prezencat.historiku', $lojtar) }}">
+            Shiko Historikun e Prezences
+        </a>
+    </p>
+
 </div>
 </body>
 </html>

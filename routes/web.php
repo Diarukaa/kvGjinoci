@@ -16,6 +16,7 @@ use App\Http\Controllers\KampionatiController;
 use App\Http\Controllers\NdeshjaLigesController;
 use App\Http\Controllers\NdeshjaLigaSyncController;
 use App\Http\Controllers\StervitjaController;
+use App\Http\Controllers\PrezencaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -121,3 +122,19 @@ Route::post(
 
 Route::resource('stervitjet', StervitjaController::class)
     ->parameters(['stervitjet' => 'stervitja']);
+
+Route::get(
+    '/stervitjet/{stervitja}/prezenca',
+    [PrezencaController::class, 'edit']
+)->name('prezencat.edit');
+
+Route::put(
+    '/stervitjet/{stervitja}/prezenca',
+    [PrezencaController::class, 'update']
+)->name('prezencat.update');
+
+Route::get(
+    '/lojtar/{lojtar}/prezenca',
+    [PrezencaController::class, 'historiku']
+)->name('prezencat.historiku');
+

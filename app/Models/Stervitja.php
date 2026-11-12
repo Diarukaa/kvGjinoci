@@ -39,4 +39,12 @@ class Stervitja extends Model
     {
         return $this->belongsTo(Sezoni::class, 'sezoni_id');
     }
+
+    public function prezencat()
+    {
+        return $this->hasMany(
+            Prezenca::class,
+            'stervitja_id'
+        );
+    }
 }

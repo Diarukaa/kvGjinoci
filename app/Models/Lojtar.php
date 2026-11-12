@@ -33,4 +33,12 @@ class Lojtar extends Model
             'lojtar_id'
         );
     }
+
+    public function prezencat()
+    {
+        return $this->hasMany(
+            Prezenca::class,
+            'lojtar_id'
+        );
+    }
 }
