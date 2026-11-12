@@ -11,6 +11,8 @@ use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\StatistikaLojtaritController;
 use App\Http\Controllers\PlayerPerformanceController;
 use App\Http\Controllers\SezoniController;
+use App\Http\Controllers\KlubiController;
+use App\Http\Controllers\KampionatiController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -73,3 +75,13 @@ Route::put('/sezonet/{sezoni}', [SezoniController::class, 'update'])
 
 Route::delete('/sezonet/{sezoni}', [SezoniController::class, 'destroy'])
     ->name('sezonet.destroy');
+
+
+Route::resource('klubet', KlubiController::class)
+    ->parameters(['klubet' => 'klubi'])
+    ->only(['index', 'store', 'update', 'destroy']);
+
+Route::resource('kampionatet', KampionatiController::class)
+    ->parameters(['kampionatet' => 'kampionati'])
+    ->only(['index', 'store', 'show', 'update', 'destroy']);
+

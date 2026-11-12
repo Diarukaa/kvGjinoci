@@ -134,6 +134,24 @@
             </a>
         </div>
 
+        <div class="card">
+            <h3>Klubet</h3>
+            <p>Menaxhimi i klubeve kundershtare.</p>
+
+            <a href="{{ route('klubet.index') }}">
+                Menaxho Klubet
+            </a>
+        </div>
+
+        <div class="card">
+            <h3>Kampionatet</h3>
+            <p>Kampionatet dhe klubet pjesemarrese.</p>
+
+            <a href="{{ route('kampionatet.index') }}">
+                Menaxho Kampionatet
+            </a>
+        </div>
+
     </div>
 </main>
 

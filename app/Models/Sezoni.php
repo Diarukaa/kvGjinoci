@@ -25,4 +25,12 @@ class Sezoni extends Model
     {
         return $this->hasMany(Ndeshja::class, 'sezoni_id');
     }
+
+    public function kampionatet()
+    {
+        return $this->hasMany(
+            Kampionati::class,
+            'sezoni_id'
+        );
+    }
 }
