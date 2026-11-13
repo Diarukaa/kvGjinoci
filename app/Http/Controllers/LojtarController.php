@@ -46,7 +46,11 @@ class LojtarController extends Controller
             'mbiemri' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'dataELindjes' => 'required|date',
-            'nrTelefonit' => 'required|integer',
+            'nrTelefonit' => [
+                'required',
+                'string',
+                'regex:/^\+3834[0-9]{7}$/'
+            ],
             'vendbanimi' => 'required|string|max:255',
             'numriFanelles' => [
                 'required', 'integer', 'between:1,99',
@@ -91,7 +95,11 @@ class LojtarController extends Controller
             'mbiemri' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'dataELindjes' => 'required|date',
-            'nrTelefonit' => 'required|integer',
+            'nrTelefonit' => [
+                'required',
+                'string',
+                'regex:/^\+3834[0-9]{7}$/'
+            ],
             'vendbanimi' => 'required|string|max:255',
             'numriFanelles' => [
                 'required', 'integer', 'between:1,99',

@@ -60,16 +60,23 @@
         </option>
     @endforeach
 </select>
+<div style="grid-column: 1 / -1;">
 
-<label>Statusi:</label>
-<select name="statusi" id="statusi" required>
-    @foreach(['Planifikuar', 'Perfunduar'] as $statusi)
-        <option value="{{ $statusi }}"
-            @selected(old('statusi', $ndeshja->statusi ?? 'Planifikuar') === $statusi)>
-            {{ $statusi }}
-        </option>
-    @endforeach
-</select>
+    <label for="statusi">Statusi:</label>
+
+    <select name="statusi" id="statusi" required>
+
+        @foreach(['Planifikuar', 'Perfunduar'] as $statusi)
+
+            <option value="{{ $statusi }}"
+                @selected(old('statusi', $ndeshja->statusi ?? 'Planifikuar') === $statusi)>
+
+                {{ $statusi }}
+
+            </option>
+        @endforeach
+    </select>
+</div>
 
 @php
     $savedSetet = isset($ndeshja)
@@ -118,7 +125,6 @@
     @endfor
 </div>
 
-<button type="submit">Ruaj Ndeshjen</button>
 
 <script>
     const statusi = document.getElementById('statusi');

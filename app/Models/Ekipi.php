@@ -16,12 +16,12 @@ class Ekipi extends Model
         'trajner_id',
     ];
 
-    public function trajner(): BelongsTo
+    public function trajner()
     {
         return $this->belongsTo(Trajner::class, 'trajner_id');
     }
 
-    public function lojtaret(): HasMany
+    public function lojtaret()
     {
         return $this->hasMany(Lojtar::class, 'ekipi_id');
     }

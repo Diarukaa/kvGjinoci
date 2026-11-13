@@ -47,7 +47,11 @@ class TrajnerController extends Controller
             'mbiemri' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'dataELindjes' => 'required|date',
-            'nrTelefonit' => 'required|integer',
+            'nrTelefonit' => [
+                'required',
+                'string',
+                'regex:/^\+3834[0-9]{7}$/'
+            ],
             'vendbanimi' => 'required|string|max:255',
             'IBAN' => 'required|string|max:34',
         ]);
@@ -72,7 +76,11 @@ class TrajnerController extends Controller
             'mbiemri' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'dataELindjes' => 'required|date',
-            'nrTelefonit' => 'required|integer',
+            'nrTelefonit' => [
+                'required',
+                'string',
+                'regex:/^\+3834[0-9]{7}$/'
+            ],
             'vendbanimi' => 'required|string|max:255',
             'IBAN' => 'required|string|max:34',
         ]);

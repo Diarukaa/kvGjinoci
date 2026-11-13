@@ -72,10 +72,35 @@ class StatisticsController extends Controller
 
         $totalFitore = $statistikat->sum('fitore');
 
+        $grafikuNdeshje = \App\Models\Ndeshja::query()
+            ->where('statusi', 'Perfunduar')
+            ->get();
+
+        $grafikuFitore = $grafikuNdeshje
+            ->filter(fn ($n) =>
+                $n->setet_tona > $n->setet_kundershtarit
+            )->count();
+
+        $grafikuHumbje = $grafikuNdeshje
+            ->filter(fn ($n) =>
+                $n->setet_tona < $n->setet_kundershtarit
+            )->count();
+
+        $grafikuTotal = $grafikuNdeshje->count();
+
+        $grafikuPerqindja = $grafikuTotal > 0
+            ? round($grafikuFitore / $grafikuTotal * 100)
+            : 0;
+
         return view('statistics.index', compact(
             'statistikat',
             'totalNdeshje',
             'totalFitore'
+        ))->with(compact(
+            'grafikuFitore',
+            'grafikuHumbje',
+            'grafikuTotal',
+            'grafikuPerqindja'
         ));
     }
 }

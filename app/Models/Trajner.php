@@ -18,6 +18,10 @@ class Trajner extends Model
         'IBAN',
     ];
 
+    protected $casts = [
+        'dataELindjes' => 'date',
+    ];
+
     public function ekipet()
     {
         return $this->hasMany(Ekipi::class, 'trajner_id');

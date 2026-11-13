@@ -24,9 +24,7 @@
        required>
 
 <label>Telefoni:</label>
-<input type="number" name="nrTelefonit"
-       value="{{ old('nrTelefonit', $lojtar->nrTelefonit ?? '') }}"
-       required>
+<x-phone-input :value="$lojtar->nrTelefonit ?? ''" />
 
 <label>Vendbanimi:</label>
 <input type="text" name="vendbanimi"

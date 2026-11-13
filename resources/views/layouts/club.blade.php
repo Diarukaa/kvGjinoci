@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="sq">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ asset('css/club-ui.css') }}">
 
     <title>@yield('title', 'KV Gjinoci')</title>
 
@@ -125,21 +128,7 @@
 </head>
 <body>
 
-<header>
-    <h2>KV Gjinoci | Volleyball Management</h2>
-
-    <nav>
-        <a href="{{ route('dashboard') }}">Dashboard</a>
-        <a href="{{ route('lojtar.index') }}">Volejbollistet</a>
-        <a href="{{ route('trajner.index') }}">Trajneret</a>
-        <a href="{{ route('ekipet.index') }}">Ekipet</a>
-        <a href="{{ route('ndeshjet.index') }}">Ndeshjet</a>
-        <a href="{{ route('sezonet.index') }}">Sezonet</a>
-        <a href="{{ route('klubet.index') }}">Klubet</a>
-        <a href="{{ route('kampionatet.index') }}">Kampionatet</a>
-        <a href="{{ route('stervitjet.index') }}">Stervitjet</a>
-    </nav>
-</header>
+@include('partials.navbar')
 
 <main>
     @if(session('success'))

@@ -6,5 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Manager extends Model
 {
-    //
+    protected $table = 'managers';
+
+    protected $fillable = [
+        'emri',
+        'mbiemri',
+        'email',
+        'dataELindjes',
+        'nrTelefonit',
+        'vendbanimi',
+        'IBAN',
+        'roli',
+    ];
+
+    protected $attributes = [
+        'roli' => 'Menaxher',
+    ];
 }

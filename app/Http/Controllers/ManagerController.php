@@ -2,63 +2,126 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Manager;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ManagerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // READ - Lista e menaxhereve
+    public function index(Request $request)
     {
-        //
+        $search = $request->input('search');
+
+        $managers = Manager::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('emri', 'like', "%{$search}%")
+                        ->orWhere('mbiemri', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('emri')
+            ->paginate(10)
+            ->withQueryString();
+
+        $totalManagers = Manager::count();
+
+        return view('managers.index', compact(
+            'managers',
+            'search',
+            'totalManagers'
+        ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // CREATE - Shfaq formularin
     public function create()
     {
-        //
+        return view('managers.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // CREATE - Ruaj menaxherin
     public function store(Request $request)
     {
-        //
+        $validated = $this->validimi($request);
+
+        Manager::create($validated);
+
+        return redirect()
+            ->route('managers.index')
+            ->with('success', 'Menaxheri u regjistrua!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // READ - Profili i menaxherit
+    public function show(Manager $manager)
     {
-        //
+        return view('managers.show', compact('manager'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // UPDATE - Shfaq formularin
+    public function edit(Manager $manager)
     {
-        //
+        return view('managers.edit', compact('manager'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+    // UPDATE - Ruaj ndryshimet
+    public function update(
+        Request $request,
+        Manager $manager
+    ) {
+        $validated = $this->validimi(
+            $request,
+            $manager
+        );
+
+        $manager->update($validated);
+
+        return redirect()
+            ->route('managers.index')
+            ->with('success', 'Menaxheri u perditesua!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // DELETE - Fshi menaxherin
+    public function destroy(Manager $manager)
     {
-        //
+        $manager->delete();
+
+        return redirect()
+            ->route('managers.index')
+            ->with('success', 'Menaxheri u fshi!');
+    }
+
+    // Validimi i perbashket
+    private function validimi(
+        Request $request,
+        ?Manager $manager = null
+    ): array {
+        return $request->validate([
+            'emri' => 'required|string|max:255',
+
+            'mbiemri' => 'required|string|max:255',
+
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('managers', 'email')
+                    ->ignore($manager?->id),
+            ],
+
+            'dataELindjes' => [
+                'required',
+                'date',
+                'before:today',
+            ],
+
+            'nrTelefonit' => [
+                'required',
+                'string',
+                'regex:/^\+3834[0-9]{7}$/'
+            ],
+
+            'vendbanimi' => 'required|string|max:255',
+        ]);
     }
 }
