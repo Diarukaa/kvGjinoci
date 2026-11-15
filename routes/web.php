@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Middleware\RoleMiddleware;
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ManagerDashboardController;
 use App\Http\Controllers\CoachDashboardController;
 use App\Http\Controllers\CoachSportController;
 use App\Http\Controllers\CoachTrainingController;
@@ -146,11 +147,10 @@ Route::get('/dashboard', function (Request $request) {
 
 // MENAXHERI
 
-Route::get('/manager/dashboard', function () {
-
-    return view('dashboards.manager');
-
-})->middleware([
+Route::get('/manager/dashboard', [
+    ManagerDashboardController::class,
+    'index'
+])->middleware([
     'auth',
     RoleMiddleware::class . ':manager'
 ])->name('manager.dashboard');
@@ -210,7 +210,7 @@ Route::middleware([
         'update'
     ])->name('ndeshjet.update');
 
-    // STATISTIKAT INDIVIDUALE
+    // STATISTIKAT
 
     Route::get('/ndeshjet/{ndeshja}/statistikat', [
         CoachSportController::class,
@@ -275,19 +275,31 @@ Route::middleware([
 
 });
 
-// ADMINISTRATORI
+// VETEM ADMINISTRATORI
 
 Route::middleware([
     'auth',
     RoleMiddleware::class . ':admin'
 ])->group(function () {
 
-    // PERDORUESIT
-
     Route::resource(
         'users',
         UserController::class
     )->except(['show']);
+
+    Route::resource(
+        'managers',
+        ManagerController::class
+    );
+
+});
+
+// ADMINISTRATORI + MENAXHERI
+
+Route::middleware([
+    'auth',
+    RoleMiddleware::class . ':admin,manager'
+])->group(function () {
 
     // TRAJNERET
 
@@ -301,13 +313,6 @@ Route::middleware([
     Route::resource(
         'lojtar',
         LojtarController::class
-    );
-
-    // MENAXHERET
-
-    Route::resource(
-        'managers',
-        ManagerController::class
     );
 
     // EKIPET
@@ -471,3 +476,5 @@ Route::middleware([
     ])->name('prezencat.historiku');
 
 });
+
+require __DIR__ . '/financat.php';

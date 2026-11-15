@@ -1,98 +1,35 @@
 <style>
-    .uf-page {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 10px 0 35px;
-        color: #172b4d;
-        font-family: Arial, sans-serif;
-    }
-
-    .uf-page * {
-        box-sizing: border-box;
-    }
-
-    .uf-hero {
-        background: linear-gradient(
-            120deg, #172b4d, #315b89
-        );
-        color: white;
-        border-radius: 18px;
-        padding: 30px;
-        margin-bottom: 25px;
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .uf-icon {
-        width: 75px;
-        height: 75px;
-        background: rgba(255,255,255,.15);
-        border-radius: 17px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 34px;
-        flex-shrink: 0;
-    }
-
-    .uf-hero h1 {
-        color: white !important;
-        margin: 0 0 10px;
-        font-size: 28px;
-    }
-
-    .uf-hero p {
-        color: #dbeafe;
-        font-size: 13px;
-        margin: 0;
-        line-height: 1.6;
-    }
-
     .uf-card {
-        background: white;
-        border: 1px solid #e5ebf3;
-        border-radius: 17px;
-        padding: 30px;
-        margin-bottom: 25px;
-        box-shadow: 0 5px 18px rgba(15,23,42,.04);
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 28px;
+        color: #172b4d;
+        box-shadow: 0 4px 15px rgba(15,23,42,.04);
     }
 
-    .uf-card h2 {
-        font-size: 22px;
-        margin: 0 0 9px;
-    }
-
-    .uf-subtitle {
-        color: #64748b;
-        font-size: 13px;
-        margin: 0 0 24px;
+    .uf-card * {
+        box-sizing: border-box;
     }
 
     .uf-grid {
         display: grid;
-        grid-template-columns: repeat(
-            2, minmax(0, 1fr)
-        );
+        grid-template-columns: repeat(2, minmax(0,1fr));
         gap: 22px;
-    }
-
-    .uf-full {
-        grid-column: 1 / -1;
     }
 
     .uf-field label {
         display: block;
-        color: #334155;
         font-size: 13px;
-        font-weight: 600;
+        font-weight: bold;
+        color: #334155;
         margin-bottom: 9px;
     }
 
     .uf-field input,
     .uf-field select {
         width: 100%;
-        height: 47px;
+        min-height: 46px;
         padding: 12px 14px;
         border: 1px solid #dbe3ee;
         border-radius: 9px;
@@ -106,68 +43,46 @@
     .uf-field select:focus {
         border-color: #2563eb;
         background: white;
-        box-shadow: 0 0 0 3px rgba(37,99,235,.08);
     }
 
-    .uf-field small {
-        display: block;
+    .uf-full {
+        grid-column: 1 / -1;
+    }
+
+    .uf-help {
         color: #64748b;
-        font-size: 11px;
+        font-size: 12px;
+        line-height: 1.7;
         margin-top: 8px;
     }
 
-    .uf-password {
-        position: relative;
-    }
-
-    .uf-password input {
-        padding-right: 75px;
-    }
-
-    .uf-toggle {
-        position: absolute;
-        top: 12px;
-        right: 10px;
-        background: none;
-        border: none;
-        color: #64748b;
-        font-size: 12px;
-        cursor: pointer;
-    }
-
-    .uf-note {
-        background: #edf4ff;
+    .uf-profile {
+        background: #f0f6ff;
         border: 1px solid #dbeafe;
-        color: #1e40af;
-        padding: 17px;
-        border-radius: 10px;
-        font-size: 13px;
-        line-height: 1.7;
-        margin-bottom: 23px;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 2px;
     }
 
-    .uf-errors {
+    .uf-error {
         background: #fff1f2;
         color: #be123c;
         border: 1px solid #fecdd3;
-        padding: 17px;
         border-radius: 10px;
+        padding: 16px;
+        margin-bottom: 22px;
         font-size: 13px;
-        margin-bottom: 23px;
+        line-height: 1.8;
     }
 
-    .uf-errors ul {
-        padding-left: 20px;
-        margin: 8px 0 0;
-    }
-
-    .uf-footer {
+    .uf-actions {
         display: flex;
         justify-content: flex-end;
-        gap: 10px;
-        padding-top: 24px;
-        margin-top: 25px;
-        border-top: 1px solid #e5ebf3;
+        align-items: center;
+        gap: 12px;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 23px;
+        margin-top: 28px;
     }
 
     .uf-btn {
@@ -176,89 +91,54 @@
         justify-content: center;
         background: #253858;
         color: white !important;
-        padding: 13px 20px;
         border: none;
+        padding: 13px 20px;
         border-radius: 9px;
-        font-size: 13px;
-        font-weight: 600;
         text-decoration: none !important;
+        font-size: 13px;
+        font-weight: bold;
         cursor: pointer;
     }
 
-    .uf-btn:hover {
-        filter: brightness(.94);
-    }
-
-    .uf-btn-gray {
+    .uf-btn-light {
         background: #edf2f7;
         color: #253858 !important;
     }
 
-    @media (max-width: 600px) {
+    .uf-card [hidden] {
+        display: none !important;
+    }
+
+    @media(max-width: 600px) {
         .uf-grid {
             grid-template-columns: 1fr;
         }
 
-        .uf-card,
-        .uf-hero {
+        .uf-card {
             padding: 20px;
-        }
-
-        .uf-icon {
-            width: 55px;
-            height: 55px;
-            font-size: 25px;
-        }
-
-        .uf-hero h1 {
-            font-size: 23px;
         }
     }
 </style>
 
 @php
-    $isEdit = isset($user);
+    $editing = $user->exists;
 
-    $roles = [
-        'admin' => 'Administrator',
-        'manager' => 'Menaxher',
-        'coach' => 'Trajner',
-        'player' => 'Volejbolliste',
-        'pending' => 'Joaktiv / Pending'
-    ];
+    $ownAccount = $editing
+        && $user->id === auth()->id();
+
+    $selectedRole = old(
+        'role',
+        $user->role ?? 'pending'
+    );
 @endphp
 
-<div class="uf-page">
-
-    <div class="uf-hero">
-
-        <div class="uf-icon">
-            {{ $isEdit ? '✏️' : '👤' }}
-        </div>
-
-        <div>
-            <h1>
-                {{ $isEdit
-                    ? 'Edito Perdoruesin'
-                    : 'Shto Perdorues te Ri' }}
-            </h1>
-
-            <p>
-                {{ $isEdit
-                    ? 'Perditeso informacionet dhe qasjen e perdoruesit.'
-                    : 'Krijo nje llogari te re per sistemin KV Gjinoci.' }}
-            </p>
-        </div>
-
-    </div>
+<div class="uf-card">
 
     @if($errors->any())
 
-        <div class="uf-errors">
+        <div class="uf-error">
 
-            <strong>
-                Kontrollo te dhenat:
-            </strong>
+            <strong>Kontrollo te dhenat:</strong>
 
             <ul>
                 @foreach($errors->all() as $error)
@@ -270,227 +150,378 @@
 
     @endif
 
-    <div class="uf-card">
+    <form method="POST"
+          action="{{ $editing
+            ? route('users.update', $user)
+            : route('users.store') }}">
 
-        <h2>Informacionet e Llogarise</h2>
+        @csrf
 
-        <p class="uf-subtitle">
-            Ploteso te dhenat dhe cakto
-            rolin e perdoruesit.
-        </p>
+        @if($editing)
+            @method('PUT')
+        @endif
 
-        <div class="uf-note">
+        <div class="uf-grid">
 
-            <strong>🔐 Me rendesi</strong>
+            {{-- EMRI --}}
 
-            <br>
+            <div class="uf-field">
 
-            Roli Administrator ka qasje te plote.
+                <label for="name">
+                    Emri dhe Mbiemri
+                </label>
 
-            Roli Joaktiv nuk mund te kyçet ne sistem.
+                <input type="text"
+                       name="name"
+                       id="name"
+                       value="{{ old('name', $user->name) }}"
+                       maxlength="255"
+                       required>
 
-            @if($isEdit)
-                Lere passwordin bosh nese nuk
-                deshiron ta ndryshosh.
-            @endif
+            </div>
+
+            {{-- EMAIL --}}
+
+            <div class="uf-field">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input type="email"
+                       name="email"
+                       id="email"
+                       value="{{ old('email', $user->email) }}"
+                       maxlength="255"
+                       required>
+
+            </div>
+
+            {{-- ROLI --}}
+
+            <div class="uf-field uf-full">
+
+                <label for="role">
+                    Roli i Perdoruesit
+                </label>
+
+                <select name="role"
+                        id="role"
+                        required
+                    @disabled($ownAccount)>
+
+                    @foreach($roles as $value => $label)
+
+                        <option value="{{ $value }}"
+                            @selected($selectedRole === $value)>
+
+                            {{ $label }}
+
+                        </option>
+
+                    @endforeach
+
+                </select>
+
+                @if($ownAccount)
+
+                    <input type="hidden"
+                           name="role"
+                           value="admin">
+
+                    <div class="uf-help">
+                        Nuk mund ta ndryshosh rolin
+                        e llogarise tende.
+                    </div>
+
+                @else
+
+                    <div class="uf-help">
+                        Zgjedh rolin dhe profilin perkates.
+                    </div>
+
+                @endif
+
+            </div>
+
+            {{-- TRAJNERI --}}
+
+            <div class="uf-profile uf-full"
+                 id="coachProfile"
+                 hidden>
+
+                <div class="uf-field">
+
+                    <label for="trajner_id">
+                        Lidhe me Profilin e Trajnerit
+                    </label>
+
+                    <select name="trajner_id"
+                            id="trajner_id">
+
+                        <option value="">
+                            Zgjedh trajnerin
+                        </option>
+
+                        @foreach($trajneret as $trajner)
+
+                            <option value="{{ $trajner->id }}"
+                                @selected(old(
+                                    'trajner_id',
+                                    $user->trajner_id
+                                ) == $trajner->id)>
+
+                                {{ $trajner->emri }}
+                                {{ $trajner->mbiemri }}
+
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
+                    <div class="uf-help">
+
+                        Trajneri do te kete qasje ne ekipet
+                        ku eshte i caktuar.
+
+                    </div>
+
+                    @if($trajneret->isEmpty())
+
+                        <div class="uf-help">
+                            Nuk ka trajner te lire.
+                            <a href="{{ route('trajner.create') }}">
+                                Krijo trajner te ri
+                            </a>
+                        </div>
+
+                    @endif
+
+                </div>
+
+            </div>
+
+            {{-- VOLEJBOLLISTJA --}}
+
+            <div class="uf-profile uf-full"
+                 id="playerProfile"
+                 hidden>
+
+                <div class="uf-field">
+
+                    <label for="lojtar_id">
+                        Lidhe me Profilin e Volejbollistes
+                    </label>
+
+                    <select name="lojtar_id"
+                            id="lojtar_id">
+
+                        <option value="">
+                            Zgjedh volejbollisten
+                        </option>
+
+                        @foreach($lojtaret as $lojtar)
+
+                            <option value="{{ $lojtar->id }}"
+                                @selected(old(
+                                    'lojtar_id',
+                                    $user->lojtar_id
+                                ) == $lojtar->id)>
+
+                                {{ $lojtar->emri }}
+                                {{ $lojtar->mbiemri }}
+                                - {{ $lojtar->pozicioni ?? '-' }}
+
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
+                    <div class="uf-help">
+
+                        Volejbollistja do t'i shohe
+                        statistikat dhe prezencen e vet.
+
+                    </div>
+
+                    @if($lojtaret->isEmpty())
+
+                        <div class="uf-help">
+                            Nuk ka volejbolliste te lire.
+                            <a href="{{ route('lojtar.create') }}">
+                                Krijo volejbolliste te re
+                            </a>
+                        </div>
+
+                    @endif
+
+                </div>
+
+            </div>
+
+            {{-- MENAXHERI --}}
+
+            <div class="uf-profile uf-full"
+                 id="managerProfile"
+                 hidden>
+
+                <div class="uf-field">
+
+                    <label for="manager_id">
+                        Lidhe me Profilin e Menaxherit
+                    </label>
+
+                    <select name="manager_id"
+                            id="manager_id">
+
+                        <option value="">
+                            Zgjedh menaxherin
+                        </option>
+
+                        @foreach($menaxheret as $manager)
+
+                            <option value="{{ $manager->id }}"
+                                @selected(old(
+                                    'manager_id',
+                                    $user->manager_id
+                                ) == $manager->id)>
+
+                                {{ $manager->emri }}
+                                {{ $manager->mbiemri }}
+
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
+                    <div class="uf-help">
+
+                        Menaxheri do te kete qasje
+                        ne modulet sportive te klubit.
+
+                    </div>
+
+                    @if($menaxheret->isEmpty())
+
+                        <div class="uf-help">
+                            Nuk ka menaxher te lire.
+                            <a href="{{ route('managers.create') }}">
+                                Krijo menaxher te ri
+                            </a>
+                        </div>
+
+                    @endif
+
+                </div>
+
+            </div>
+
+            {{-- PASSWORD --}}
+
+            <div class="uf-field">
+
+                <label for="password">
+
+                    {{ $editing
+                        ? 'Fjalekalimi i Ri'
+                        : 'Fjalekalimi' }}
+
+                </label>
+
+                <input type="password"
+                       name="password"
+                       id="password"
+                       minlength="8"
+                       autocomplete="new-password"
+                    @required(!$editing)>
+
+                <div class="uf-help">
+
+                    {{ $editing
+                        ? 'Lere bosh nese nuk deshiron ta ndryshosh.'
+                        : 'Minimumi 8 karaktere.' }}
+
+                </div>
+
+            </div>
+
+            <div class="uf-field">
+
+                <label for="password_confirmation">
+                    Konfirmo Fjalekalimin
+                </label>
+
+                <input type="password"
+                       name="password_confirmation"
+                       id="password_confirmation"
+                       minlength="8"
+                       autocomplete="new-password"
+                    @required(!$editing)>
+
+            </div>
 
         </div>
 
-        <form method="POST"
-              action="{{ $isEdit
-                  ? route('users.update', $user)
-                  : route('users.store') }}">
+        <div class="uf-actions">
 
-            @csrf
+            <a href="{{ route('users.index') }}"
+               class="uf-btn uf-btn-light">
 
-            @if($isEdit)
-                @method('PUT')
-            @endif
+                Anulo
 
-            <div class="uf-grid">
+            </a>
 
-                <div class="uf-field">
+            <button type="submit" class="uf-btn">
 
-                    <label for="name">
-                        Emri dhe Mbiemri
-                    </label>
+                {{ $editing
+                    ? 'Ruaj Ndryshimet'
+                    : 'Krijo Perdoruesin' }}
 
-                    <input type="text"
-                           id="name"
-                           name="name"
-                           value="{{ old('name', $user->name ?? '') }}"
-                           placeholder="Emri dhe mbiemri"
-                           required>
+            </button>
 
-                </div>
+        </div>
 
-                <div class="uf-field">
-
-                    <label for="email">
-                        Email
-                    </label>
-
-                    <input type="email"
-                           id="email"
-                           name="email"
-                           value="{{ old('email', $user->email ?? '') }}"
-                           placeholder="email@example.com"
-                           required>
-
-                </div>
-
-                <div class="uf-field">
-
-                    <label for="password">
-                        {{ $isEdit
-                            ? 'Fjalekalimi i Ri'
-                            : 'Fjalekalimi' }}
-                    </label>
-
-                    <div class="uf-password">
-
-                        <input type="password"
-                               id="password"
-                               name="password"
-                               minlength="8"
-                               autocomplete="new-password"
-                               placeholder="Minimum 8 karaktere"
-                               @if(!$isEdit) required @endif>
-
-                        <button type="button"
-                                class="uf-toggle"
-                                onclick="toggleUserPassword('password', this)">
-                            Shfaq
-                        </button>
-
-                    </div>
-
-                    @if($isEdit)
-                        <small>
-                            Lere bosh per ta mbajtur
-                            passwordin aktual.
-                        </small>
-                    @endif
-
-                </div>
-
-                <div class="uf-field">
-
-                    <label for="password_confirmation">
-                        Konfirmo Fjalekalimin
-                    </label>
-
-                    <div class="uf-password">
-
-                        <input type="password"
-                               id="password_confirmation"
-                               name="password_confirmation"
-                               minlength="8"
-                               autocomplete="new-password"
-                               placeholder="Perserite fjalekalimin"
-                               @if(!$isEdit) required @endif>
-
-                        <button type="button"
-                                class="uf-toggle"
-                                onclick="toggleUserPassword('password_confirmation', this)">
-                            Shfaq
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <div class="uf-field uf-full">
-
-                    <label for="role">
-                        Roli i Perdoruesit
-                    </label>
-
-                    @if($isEdit && $user->id === auth()->id())
-
-                        <select id="role" disabled>
-                            <option>
-                                Administrator
-                            </option>
-                        </select>
-
-                        <input type="hidden"
-                               name="role"
-                               value="admin">
-
-                        <small>
-                            Nuk mund ta ndryshosh
-                            rolin e llogarise tende.
-                        </small>
-
-                    @else
-
-                        <select name="role"
-                                id="role"
-                                required>
-
-                            @foreach($roles as $value => $label)
-
-                                <option value="{{ $value }}"
-                                    @selected(
-                                        old(
-                                            'role',
-                                            $user->role ?? 'pending'
-                                        ) === $value
-                                    )>
-
-                                    {{ $label }}
-
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-                        <small>
-                            Roli percakton qasjen
-                            e perdoruesit ne sistem.
-                        </small>
-
-                    @endif
-
-                </div>
-
-            </div>
-
-            <div class="uf-footer">
-
-                <a href="{{ route('users.index') }}"
-                   class="uf-btn uf-btn-gray">
-
-                    Anulo
-
-                </a>
-
-                <button type="submit" class="uf-btn">
-
-                    {{ $isEdit
-                        ? '✓ Ruaj Ndryshimet'
-                        : '✓ Krijo Perdoruesin' }}
-
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
+    </form>
 
 </div>
 
 <script>
-    function toggleUserPassword(id, button) {
-        const input = document.getElementById(id);
+    document.addEventListener('DOMContentLoaded', function () {
 
-        const hidden = input.type === 'password';
+        const role = document.getElementById('role');
 
-        input.type = hidden ? 'text' : 'password';
+        const profiles = {
+            coach: document.getElementById('coachProfile'),
+            player: document.getElementById('playerProfile'),
+            manager: document.getElementById('managerProfile')
+        };
 
-        button.textContent = hidden ? 'Fshih' : 'Shfaq';
-    }
+        function perditesoProfilin() {
+
+            Object.entries(profiles).forEach(
+                ([key, container]) => {
+
+                    const active = role.value === key;
+
+                    container.hidden = !active;
+
+                    const select = container.querySelector('select');
+
+                    select.disabled = !active;
+
+                    select.required = active;
+                }
+            );
+        }
+
+        role.addEventListener(
+            'change',
+            perditesoProfilin
+        );
+
+        perditesoProfilin();
+    });
 </script>

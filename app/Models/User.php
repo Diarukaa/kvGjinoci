@@ -46,6 +46,14 @@ class User extends Authenticatable
         );
     }
 
+    public function manager(): BelongsTo
+    {
+        return $this->belongsTo(
+            Manager::class,
+            'manager_id'
+        );
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';

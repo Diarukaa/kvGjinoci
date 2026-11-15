@@ -5,599 +5,427 @@
 @section('content')
 
     <style>
-        .users-page {
-            max-width: 1150px;
-            margin: 0 auto;
-            padding: 12px 0 40px;
+        .ul-page {
+            max-width: 1250px;
+            margin: 20px auto 40px;
             color: #172b4d;
             font-family: Arial, sans-serif;
         }
 
-        .users-page * {
-            box-sizing: border-box;
-        }
-
-        .u-header {
+        .ul-hero {
+            background: linear-gradient(120deg,#172b4d,#315b89);
+            color: white;
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 20px;
-            margin-bottom: 25px;
         }
 
-        .u-header h1 {
-            font-size: 30px;
-            margin: 0 0 9px;
-        }
-
-        .u-header p {
-            margin: 0;
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .u-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: #253858;
+        .ul-hero h1 {
             color: white !important;
-            padding: 12px 18px;
-            border-radius: 9px;
-            border: 0;
-            text-decoration: none !important;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: .2s;
+            margin: 13px 0;
         }
 
-        .u-btn:hover {
-            filter: brightness(.94);
-            transform: translateY(-1px);
-        }
-
-        .u-btn-light {
-            background: #e8efff;
-            color: #2563eb !important;
-        }
-
-        .u-btn-gray {
-            background: #edf2f7;
-            color: #253858 !important;
-        }
-
-        .u-btn-danger {
-            background: #fff1f2;
-            color: #dc2626 !important;
-        }
-
-        .u-hero {
-            background: linear-gradient(
-                120deg,
-                #172b4d,
-                #315b89
-            );
-            padding: 28px;
-            border-radius: 18px;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 22px;
-            margin-bottom: 25px;
-        }
-
-        .u-hero-icon {
-            width: 75px;
-            height: 75px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 34px;
-            background: rgba(255,255,255,.15);
-            border: 1px solid rgba(255,255,255,.2);
-            border-radius: 17px;
-            flex-shrink: 0;
-        }
-
-        .u-hero small {
-            display: block;
-            color: #bfdbfe;
-            font-size: 11px;
-            font-weight: bold;
-            letter-spacing: 1.5px;
-            margin-bottom: 9px;
-        }
-
-        .u-hero h2 {
-            color: white !important;
-            font-size: 26px;
-            margin: 0 0 10px;
-        }
-
-        .u-hero p {
+        .ul-hero p {
             color: #dbeafe;
-            font-size: 13px;
-            line-height: 1.6;
+            font-size: 14px;
             margin: 0;
         }
 
-        .u-stats {
-            display: grid;
-            grid-template-columns: repeat(
-            3, minmax(0, 1fr)
-        );
-            gap: 16px;
-            margin-bottom: 25px;
-        }
-
-        .u-stat {
+        .ul-card {
             background: white;
-            padding: 23px;
-            border: 1px solid #e5ebf3;
-            border-radius: 14px;
-            box-shadow: 0 4px 15px rgba(15,23,42,.04);
-        }
-
-        .u-stat-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #64748b;
-            font-size: 13px;
-            margin-bottom: 15px;
-        }
-
-        .u-stat-icon {
-            width: 38px;
-            height: 38px;
-            background: #edf4ff;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .u-stat h3 {
-            font-size: 30px;
-            margin: 0;
-            color: #172b4d;
-        }
-
-        .u-card {
-            background: white;
-            border: 1px solid #e5ebf3;
+            border: 1px solid #e2e8f0;
             border-radius: 16px;
             padding: 25px;
-            margin-bottom: 25px;
             box-shadow: 0 4px 15px rgba(15,23,42,.04);
         }
 
-        .u-card h2 {
-            font-size: 21px;
-            margin: 0 0 10px;
-        }
-
-        .u-card p {
-            color: #64748b;
-            font-size: 13px;
-            margin: 0 0 22px;
-        }
-
-        .u-search {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 0;
-        }
-
-        .u-search input {
-            flex: 1;
-            width: 100%;
-            min-width: 0;
-            height: 44px;
-            padding: 12px 15px;
-            border: 1px solid #dbe3ee;
-            background: #f8fafc;
-            border-radius: 9px;
-            outline: none;
-            font-size: 13px;
-        }
-
-        .u-search input:focus {
-            border-color: #2563eb;
-        }
-
-        .u-table-wrap {
+        .ul-table-wrap {
             overflow-x: auto;
-            border-radius: 11px;
+            border-radius: 10px;
         }
 
-        .users-page table {
+        .ul-page table {
             width: 100%;
+            min-width: 900px;
             border-collapse: collapse;
-            min-width: 730px;
         }
 
-        .users-page th {
+        .ul-page th {
             background: #253858;
             color: white;
+            padding: 15px;
             text-align: left;
             font-size: 12px;
-            padding: 16px;
-            white-space: nowrap;
         }
 
-        .users-page td {
-            padding: 16px;
-            border-bottom: 1px solid #e5ebf3;
+        .ul-page td {
+            padding: 17px 15px;
+            border-bottom: 1px solid #e2e8f0;
             font-size: 13px;
-            vertical-align: middle;
         }
 
-        .users-page tbody tr:hover {
+        .ul-page tbody tr:hover {
             background: #f8fafc;
         }
 
-        .u-person {
+        .ul-user {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .u-avatar {
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
+        .ul-avatar {
+            width: 40px;
+            height: 40px;
             background: #e8efff;
             color: #253858;
+            border-radius: 10px;
             font-weight: bold;
-            font-size: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             flex-shrink: 0;
         }
 
-        .u-person strong {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .u-person small {
-            color: #64748b;
-            font-size: 11px;
-        }
-
-        .u-role {
-            display: inline-flex;
-            padding: 7px 11px;
+        .ul-badge {
+            display: inline-block;
+            background: #e8efff;
+            color: #315b89;
             border-radius: 7px;
+            padding: 7px 11px;
             font-size: 11px;
             font-weight: bold;
-            white-space: nowrap;
         }
 
-        .u-role-admin {
-            background: #e0e7ff;
-            color: #4338ca;
-        }
-
-        .u-role-manager {
-            background: #dbeafe;
-            color: #1d4ed8;
-        }
-
-        .u-role-coach {
+        .ul-green {
             background: #dcfce7;
-            color: #166534;
+            color: #15803d;
         }
 
-        .u-role-player {
+        .ul-orange {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .ul-purple {
             background: #f3e8ff;
             color: #7e22ce;
         }
 
-        .u-role-pending {
-            background: #fef3c7;
-            color: #b45309;
-        }
-
-        .u-actions {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-        .u-actions form {
-            margin: 0;
-        }
-
-        .u-actions .u-btn {
-            padding: 9px 12px;
-            font-size: 12px;
-        }
-
-        .u-message {
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-
-        .u-success {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .u-error {
-            background: #fff1f2;
-            color: #be123c;
-        }
-
-        .u-empty {
-            text-align: center;
-            padding: 40px !important;
+        .ul-gray {
+            background: #edf2f7;
             color: #64748b;
         }
 
-        .u-pagination {
-            margin-top: 20px;
+        .ul-btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 11px 16px;
+            background: #253858;
+            color: white !important;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none !important;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
         }
 
-        .u-pagination svg {
-            width: 18px;
-            height: 18px;
+        .ul-btn-light {
+            background: #e8efff;
+            color: #315b89 !important;
         }
 
-        @media (max-width: 800px) {
-            .u-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .u-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+        .ul-btn-white {
+            background: white;
+            color: #172b4d !important;
         }
 
-        @media (max-width: 500px) {
-            .u-stats {
-                grid-template-columns: 1fr;
-            }
+        .ul-btn-delete {
+            background: #fee2e2;
+            color: #b91c1c !important;
+        }
 
-            .u-card {
-                padding: 17px;
-            }
+        .ul-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-            .u-search {
+        .ul-actions form {
+            margin: 0;
+        }
+
+        .ul-success {
+            padding: 16px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 10px;
+            margin-bottom: 22px;
+            font-size: 13px;
+        }
+
+        .ul-error {
+            padding: 16px;
+            background: #fff1f2;
+            color: #be123c;
+            border-radius: 10px;
+            margin-bottom: 22px;
+            font-size: 13px;
+        }
+
+        @media(max-width: 650px) {
+            .ul-hero {
                 flex-wrap: wrap;
+                padding: 22px;
             }
 
-            .u-search input {
-                flex: 0 0 100%;
-            }
-
-            .u-hero {
-                padding: 20px;
-            }
-
-            .u-hero-icon {
-                display: none;
+            .ul-card {
+                padding: 17px;
             }
         }
     </style>
 
     @php
-        $roleNames = [
+        $roleLabels = [
             'admin' => 'Administrator',
             'manager' => 'Menaxher',
             'coach' => 'Trajner',
             'player' => 'Volejbolliste',
-            'pending' => 'Joaktiv',
+            'pending' => 'Ne pritje'
         ];
     @endphp
 
-    <div class="users-page">
+    <div class="ul-page">
 
-        <div class="u-header">
+        <div class="ul-hero">
 
             <div>
+
+                <small style="color:#bfdbfe;letter-spacing:1.5px;">
+                    KV GJINOCI | USER MANAGEMENT
+                </small>
+
                 <h1>Menaxhimi i Perdoruesve</h1>
 
                 <p>
-                    Menaxho llogarite dhe qasjen
-                    ne sistemin KV Gjinoci.
+                    Menaxho llogarite, rolet dhe
+                    lidhjet me profilet e klubit.
                 </p>
+
             </div>
 
             <a href="{{ route('users.create') }}"
-               class="u-btn">
+               class="ul-btn ul-btn-white">
+
                 + Shto Perdorues
+
             </a>
 
         </div>
 
         @if(session('success'))
-            <div class="u-message u-success">
+
+            <div class="ul-success">
                 {{ session('success') }}
             </div>
+
         @endif
 
-        @if(session('error'))
-            <div class="u-message u-error">
-                {{ session('error') }}
+        @if($errors->any())
+
+            <div class="ul-error">
+
+                @foreach($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                @endforeach
+
             </div>
+
         @endif
 
-        <div class="u-hero">
+        <div class="ul-card">
 
-            <div class="u-hero-icon">
-                🔐
-            </div>
+            <h2 style="margin-top:0;">
+                Lista e Perdoruesve
+            </h2>
 
-            <div>
-                <small>KV GJINOCI | ADMINISTRATION</small>
+            <p style="color:#64748b;font-size:13px;margin-bottom:24px;">
 
-                <h2>Qasja dhe Siguria e Sistemit</h2>
+                Total: {{ $users->total() }} llogari ne sistem.
 
-                <p>
-                    Krijo llogari, cakto rolet dhe
-                    kontrollo kush ka qasje ne
-                    modulet e klubit.
-                </p>
-            </div>
-
-        </div>
-
-        <div class="u-stats">
-
-            @foreach([
-                ['Total Perdorues', $totalUsers, '👥'],
-                ['Administratore', $totalAdmins, '🛡️'],
-                ['Menaxhere', $totalManagers, '💼'],
-                ['Trajnere', $totalCoaches, '📋'],
-                ['Volejbolliste', $totalPlayers, '🏐'],
-                ['Llogari Joaktive', $totalPending, '🔒']
-            ] as [$label, $total, $icon])
-
-                <div class="u-stat">
-
-                    <div class="u-stat-top">
-                        <span>{{ $label }}</span>
-
-                        <div class="u-stat-icon">
-                            {{ $icon }}
-                        </div>
-                    </div>
-
-                    <h3>{{ $total }}</h3>
-
-                </div>
-
-            @endforeach
-
-        </div>
-
-        <div class="u-card">
-
-            <h2>Kerko Perdorues</h2>
-
-            <form method="GET"
-                  action="{{ route('users.index') }}"
-                  class="u-search">
-
-                <input type="text"
-                       name="search"
-                       value="{{ $search }}"
-                       placeholder="Kerko sipas emrit ose emailit...">
-
-                <button type="submit" class="u-btn">
-                    Kerko
-                </button>
-
-                <a href="{{ route('users.index') }}"
-                   class="u-btn u-btn-gray">
-                    Pastro
-                </a>
-
-            </form>
-
-        </div>
-
-        <div class="u-card">
-
-            <h2>Llogarite e Sistemit</h2>
-
-            <p>
-                Lista e perdoruesve dhe roleve
-                te regjistruara.
             </p>
 
-            <div class="u-table-wrap">
+            <div class="ul-table-wrap">
 
                 <table>
 
                     <thead>
+
                     <tr>
-                        <th>ID</th>
                         <th>Perdoruesi</th>
                         <th>Email</th>
                         <th>Roli</th>
-                        <th>Regjistruar</th>
+                        <th>Profili i Lidhur</th>
+                        <th>Statusi</th>
                         <th>Veprimet</th>
                     </tr>
+
                     </thead>
 
                     <tbody>
 
                     @forelse($users as $user)
 
+                        @php
+                            $profile = match($user->role) {
+                                'coach' => $user->trajner,
+                                'player' => $user->lojtar,
+                                'manager' => $user->manager,
+                                default => null
+                            };
+
+                            $needsProfile = in_array(
+                                $user->role,
+                                ['coach','player','manager']
+                            );
+
+                            $roleClass = match($user->role) {
+                                'admin' => 'ul-purple',
+                                'manager' => '',
+                                'coach' => 'ul-green',
+                                'player' => '',
+                                default => 'ul-gray'
+                            };
+                        @endphp
+
                         <tr>
 
-                            <td>{{ $user->id }}</td>
-
                             <td>
-                                <div class="u-person">
 
-                                    <div class="u-avatar">
+                                <div class="ul-user">
+
+                                    <div class="ul-avatar">
+
                                         {{ mb_strtoupper(
                                             mb_substr($user->name, 0, 1)
                                         ) }}
+
                                     </div>
 
                                     <div>
-                                        <strong>
-                                            {{ $user->name }}
-                                        </strong>
 
-                                        <small>
-                                            @if($user->id === auth()->id())
+                                        <strong>{{ $user->name }}</strong>
+
+                                        @if($user->id === auth()->id())
+
+                                            <div style="color:#64748b;font-size:11px;">
                                                 Llogaria jote
-                                            @else
-                                                Perdorues i sistemit
-                                            @endif
-                                        </small>
+                                            </div>
+
+                                        @endif
+
                                     </div>
 
                                 </div>
+
                             </td>
 
                             <td>{{ $user->email }}</td>
 
                             <td>
-                                <span class="u-role u-role-{{ $user->role }}">
-                                    {{ $roleNames[$user->role] ?? 'I panjohur' }}
+
+                                <span class="ul-badge {{ $roleClass }}">
+
+                                    {{ $roleLabels[$user->role]
+                                        ?? $user->role }}
+
                                 </span>
+
                             </td>
 
                             <td>
-                                {{ $user->created_at?->format('d.m.Y') ?? '-' }}
+
+                                @if($profile)
+
+                                    <strong>
+
+                                        {{ $profile->emri }}
+                                        {{ $profile->mbiemri }}
+
+                                    </strong>
+
+                                @elseif($needsProfile)
+
+                                    <span class="ul-badge ul-orange">
+
+                                        Pa profil
+
+                                    </span>
+
+                                @else
+
+                                    <span style="color:#64748b;">
+                                        -
+                                    </span>
+
+                                @endif
+
                             </td>
 
                             <td>
 
-                                <div class="u-actions">
+                                @if($user->role === 'pending')
+
+                                    <span class="ul-badge ul-gray">
+
+                                        Joaktiv
+
+                                    </span>
+
+                                @else
+
+                                    <span class="ul-badge ul-green">
+
+                                        Aktiv
+
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                            <td>
+
+                                <div class="ul-actions">
 
                                     <a href="{{ route('users.edit', $user) }}"
-                                       class="u-btn u-btn-gray">
+                                       class="ul-btn ul-btn-light">
+
                                         Edito
+
                                     </a>
 
                                     @if($user->id !== auth()->id())
 
                                         <form method="POST"
                                               action="{{ route('users.destroy', $user) }}"
-                                              onsubmit="return confirm('A je i sigurt qe deshiron ta fshish kete perdorues?')">
+                                              onsubmit="return confirm('A je i sigurt qe deshiron ta fshish kete llogari?')">
 
                                             @csrf
                                             @method('DELETE')
 
                                             <button type="submit"
-                                                    class="u-btn u-btn-danger">
+                                                    class="ul-btn ul-btn-delete">
+
                                                 Fshi
+
                                             </button>
 
                                         </form>
@@ -613,9 +441,14 @@
                     @empty
 
                         <tr>
-                            <td colspan="6" class="u-empty">
-                                Nuk ka perdorues te gjetur.
+
+                            <td colspan="6"
+                                style="text-align:center;padding:35px;color:#64748b;">
+
+                                Nuk ka perdorues te regjistruar.
+
                             </td>
+
                         </tr>
 
                     @endforelse
@@ -626,16 +459,13 @@
 
             </div>
 
-            <div class="u-pagination">
+            <div style="margin-top:24px;">
+
                 {{ $users->links() }}
+
             </div>
 
         </div>
-
-        <a href="{{ route('dashboard') }}"
-           class="u-btn u-btn-gray">
-            ← Kthehu ne Dashboard
-        </a>
 
     </div>
 

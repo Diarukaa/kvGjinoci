@@ -101,8 +101,7 @@
         border-bottom-color: #93c5fd;
     }
 
-    @media (max-width: 800px) {
-
+    @media(max-width: 800px) {
         .kg-navbar {
             padding: 18px 20px;
         }
@@ -120,8 +119,7 @@
         }
     }
 
-    @media (max-width: 500px) {
-
+    @media(max-width: 500px) {
         .kg-nav-top {
             flex-direction: column;
             align-items: flex-start;
@@ -138,7 +136,6 @@
 </style>
 
 @php
-
     $navRoles = [
         'admin' => 'Administrator',
         'manager' => 'Menaxher',
@@ -149,66 +146,79 @@
 
     $role = auth()->user()?->role;
 
-    $links = match($role) {
+    $sharedLinks = [
 
-        'admin' => [
+    ['Volejbollistet', 'lojtar.index', 'lojtar.*'],
+    ['Trajneret', 'trajner.index', 'trajner.*'],
+    ['Ekipet', 'ekipet.index', 'ekipet.*'],
+    ['Ndeshjet', 'ndeshjet.index', 'ndeshjet.*'],
+    ['Statistikat', 'statistics.index', 'statistics.*'],
+    ['Performance', 'performance.index', 'performance.*'],
+    ['Sezonet', 'sezonet.index', 'sezonet.*'],
+    ['Klubet', 'klubet.index', 'klubet.*'],
+    ['Kampionatet', 'kampionatet.index', 'kampionatet.*'],
+    ['Stervitjet', 'stervitjet.index', 'stervitjet.*'],
+    ['Financat', 'financat.index', 'financat.index'],
 
-            ['Dashboard', 'dashboard', 'dashboard'],
+    [
+        'Bilanci Financiar',
+        'financat.transaksionet.index',
+        'financat.transaksionet.*'
+    ],
 
-            ['Volejbollistet', 'lojtar.index', 'lojtar.*'],
+];
 
-            ['Trajneret', 'trajner.index', 'trajner.*'],
+$links = match($role) {
 
-            ['Ekipet', 'ekipet.index', 'ekipet.*'],
+    'admin' => array_merge(
 
-            ['Ndeshjet', 'ndeshjet.index', 'ndeshjet.*'],
+        [
+            ['Dashboard', 'dashboard', 'dashboard']
+        ],
 
-            ['Statistikat', 'statistics.index', 'statistics.*'],
+        $sharedLinks,
 
-            ['Performance', 'performance.index', 'performance.*'],
-
-            ['Sezonet', 'sezonet.index', 'sezonet.*'],
-
-            ['Klubet', 'klubet.index', 'klubet.*'],
-
-            ['Kampionatet', 'kampionatet.index', 'kampionatet.*'],
-
-            ['Stervitjet', 'stervitjet.index', 'stervitjet.*'],
-
+        [
             ['Menaxheret', 'managers.index', 'managers.*'],
-
             ['Perdoruesit', 'users.index', 'users.*']
+        ]
 
-        ],
+    ),
 
-        'coach' => [
+    'manager' => array_merge(
 
-            ['Dashboard', 'coach.dashboard', 'coach.dashboard'],
-
-            ['Ndeshjet e Mia', 'coach.ndeshjet', 'coach.ndeshjet*'],
-
-            ['Stervitjet e Mia', 'coach.stervitjet', 'coach.stervitjet*'],
-
-            ['Performance', 'coach.performance', 'coach.performance']
-
-        ],
-
-        'manager' => [
-
+        [
             ['Dashboard', 'manager.dashboard', 'manager.dashboard']
-
         ],
 
-        'player' => [
+        $sharedLinks,
 
-            ['Dashboard', 'player.dashboard', 'player.dashboard']
+        [
+            ['Financat e Mia', 'financat.mine', 'financat.mine']
+        ]
 
-        ],
+    ),
 
-        default => []
+    'coach' => [
 
-    };
+        ['Dashboard', 'coach.dashboard', 'coach.dashboard'],
+        ['Ndeshjet e Mia', 'coach.ndeshjet', 'coach.ndeshjet*'],
+        ['Stervitjet e Mia', 'coach.stervitjet', 'coach.stervitjet*'],
+        ['Performance', 'coach.performance', 'coach.performance'],
+        ['Financat e Mia', 'financat.mine', 'financat.mine']
 
+    ],
+
+    'player' => [
+
+        ['Dashboard', 'player.dashboard', 'player.dashboard'],
+        ['Financat e Mia', 'financat.mine', 'financat.mine']
+
+    ],
+
+    default => []
+
+};
 @endphp
 
 <div class="kg-navbar">
@@ -237,15 +247,11 @@
                 <div class="kg-user-info">
 
                     <strong>
-
                         {{ auth()->user()->name }}
-
                     </strong>
 
                     <small>
-
                         {{ $navRoles[$role] ?? 'Perdorues' }}
-
                     </small>
 
                 </div>
@@ -256,11 +262,8 @@
 
                     @csrf
 
-                    <button type="submit"
-                            class="kg-logout">
-
+                    <button type="submit" class="kg-logout">
                         Dil nga sistemi
-
                     </button>
 
                 </form>
@@ -284,44 +287,28 @@
                         $active = request()->routeIs($pattern);
 
                         if ($routeName === 'ndeshjet.index') {
-
                             $active = $active ||
-                                request()->routeIs(
-                                    'statistikat-lojtareve.*'
-                                );
-
+                                request()->routeIs('statistikat-lojtareve.*');
                         }
 
                         if ($routeName === 'kampionatet.index') {
-
                             $active = $active ||
                                 request()->routeIs('liga.*');
-
                         }
 
                         if ($routeName === 'stervitjet.index') {
-
                             $active = $active ||
                                 request()->routeIs('prezencat.*');
-
                         }
 
                         if ($routeName === 'coach.ndeshjet') {
-
                             $active = $active ||
-                                request()->routeIs(
-                                    'coach.statistikat*'
-                                );
-
+                                request()->routeIs('coach.statistikat*');
                         }
 
                         if ($routeName === 'coach.stervitjet') {
-
                             $active = $active ||
-                                request()->routeIs(
-                                    'coach.prezenca.*'
-                                );
-
+                                request()->routeIs('coach.prezenca.*');
                         }
 
                     @endphp
