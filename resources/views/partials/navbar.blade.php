@@ -219,6 +219,21 @@ $links = match($role) {
     default => []
 
 };
+
+    if (in_array($role, [
+    'admin',
+    'manager',
+    'coach',
+    'player'
+], true)) {
+
+    $links[] = [
+        'Kalendari',
+        'kalendari.index',
+        'kalendari.*'
+    ];
+
+}
 @endphp
 
 <div class="kg-navbar">
@@ -235,6 +250,8 @@ $links = match($role) {
         @auth
 
             <div class="kg-user-area">
+
+                @include('partials.notification-bell')
 
                 <div class="kg-avatar">
 
