@@ -233,6 +233,18 @@ $links = match($role) {
         'kalendari.*'
     ];
 
+    $links[] = [
+        'Raportet',
+        'raportet.index',
+        'raportet.*'
+    ];
+
+    $links[] = [
+        'Profili Im',
+        'profile.index',
+        'profile.*'
+    ];
+
 }
 @endphp
 
@@ -253,25 +265,49 @@ $links = match($role) {
 
                 @include('partials.notification-bell')
 
-                <div class="kg-avatar">
+                <a href="{{ route('profile.index') }}"
+                   class="kg-avatar"
+                   title="Profili Im"
+                   style="overflow:hidden;text-decoration:none;">
 
-                    {{ mb_strtoupper(
-                        mb_substr(auth()->user()->name, 0, 1)
-                    ) }}
+                    @if(auth()->user()->profile_photo)
 
-                </div>
+                        <img src="{{ route('profile.photo.show') }}"
+                             alt="Fotoja e profilit"
+                             style="
+                width:100%;
+                height:100%;
+                object-fit:cover;
+                border-radius:inherit;
+             ">
 
-                <div class="kg-user-info">
+                    @else
+
+                        {{ mb_strtoupper(
+                            mb_substr(auth()->user()->name, 0, 1)
+                        ) }}
+
+                    @endif
+
+                </a>
+
+                <a href="{{ route('profile.index') }}"
+                   class="kg-user-info"
+                   style="text-decoration:none;">
 
                     <strong>
+
                         {{ auth()->user()->name }}
+
                     </strong>
 
                     <small>
+
                         {{ $navRoles[$role] ?? 'Perdorues' }}
+
                     </small>
 
-                </div>
+                </a>
 
                 <form method="POST"
                       action="{{ route('logout') }}"

@@ -480,3 +480,5 @@ Route::middleware([
 require __DIR__ . '/financat.php';
 require __DIR__ . '/njoftimet.php';
 require __DIR__ . '/kalendari.php';
+require __DIR__ . '/raportet.php';
+require __DIR__ . '/profile.php';
