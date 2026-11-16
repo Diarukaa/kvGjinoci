@@ -8,54 +8,197 @@ use App\Models\Ekipi;
 use App\Models\Ndeshja;
 use App\Models\Manager;
 use App\Models\Stervitja;
-use App\Models\Klubi;
-use App\Models\Kampionati;
-use App\Models\Sezoni;
+use App\Models\Kontrata;
+use App\Models\Pagesa;
+use App\Models\ActivityLog;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // Vetem administratori
+
+        abort_unless(
+            $request->user()->role === 'admin',
+            403
+        );
+
+        // STATISTIKAT KRYESORE
+
         $totalLojtare = Lojtar::count();
+
         $totalTrajnere = Trajner::count();
+
         $totalEkipe = Ekipi::count();
-        $totalNdeshje = Ndeshja::count();
+
         $totalManagers = Manager::count();
+
+        $totalNdeshje = Ndeshja::count();
+
         $totalStervitje = Stervitja::count();
-        $totalKlube = Klubi::count();
-        $totalKampionate = Kampionati::count();
 
-        $sezoniAktiv = Sezoni::where('aktiv', true)
-            ->orderByDesc('data_fillimit')
-            ->first();
+        // REZULTATET SPORTIVE
 
-        $ndeshjetEArdhshme = Ndeshja::with('ekipi')
+        $fitore = Ndeshja::query()
+
+            ->where('statusi', 'Perfunduar')
+
+            ->whereColumn(
+                'setet_tona',
+                '>',
+                'setet_kundershtarit'
+            )
+
+            ->count();
+
+        $humbje = Ndeshja::query()
+
+            ->where('statusi', 'Perfunduar')
+
+            ->whereColumn(
+                'setet_tona',
+                '<',
+                'setet_kundershtarit'
+            )
+
+            ->count();
+
+        $ndeshjePerfunduara = Ndeshja::query()
+
+            ->where('statusi', 'Perfunduar')
+
+            ->count();
+
+        $ndeshjePlanifikuara = Ndeshja::query()
+
             ->where('statusi', 'Planifikuar')
-            ->where('data_ndeshjes', '>=', now())
+
+            ->count();
+
+        $totalRezultate = $fitore + $humbje;
+
+        $winRate = $totalRezultate > 0
+
+            ? round(
+                ($fitore / $totalRezultate) * 100,
+                1
+            )
+
+            : 0;
+
+        // NDESHJET E ARDHSHME
+
+        $ndeshjetEArdhshme = Ndeshja::query()
+
+            ->with('ekipi')
+
+            ->where('statusi', 'Planifikuar')
+
+            ->whereDate(
+                'data_ndeshjes',
+                '>=',
+                today()
+            )
+
             ->orderBy('data_ndeshjes')
-            ->take(3)
+
+            ->limit(5)
+
             ->get();
 
-        $stervitjetEArdhshme = Stervitja::with('ekipi')
+        // STERVITJET E ARDHSHME
+
+        $stervitjetEArdhshme = Stervitja::query()
+
+            ->with('ekipi')
+
             ->where('statusi', 'Planifikuar')
-            ->whereDate('data', '>=', today())
+
+            ->whereDate(
+                'data',
+                '>=',
+                today()
+            )
+
             ->orderBy('data')
+
             ->orderBy('ora_fillimit')
-            ->take(3)
+
+            ->limit(5)
+
             ->get();
+
+        // REZULTATET E FUNDIT
+
+        $rezultatetEFundit = Ndeshja::query()
+
+            ->with('ekipi')
+
+            ->where('statusi', 'Perfunduar')
+
+            ->orderByDesc('data_ndeshjes')
+
+            ->limit(5)
+
+            ->get();
+
+        // FINANCAT
+
+        $totalKontrata = Kontrata::count();
+
+        $totalPagesa = Pagesa::count();
+
+        // AKTIVITETET E FUNDIT
+
+        $aktivitetetEFundit = ActivityLog::query()
+
+            ->latest()
+
+            ->limit(5)
+
+            ->get();
+
+        // DASHBOARD VIEW
 
         return view('dashboard', compact(
+
             'totalLojtare',
+
             'totalTrajnere',
+
             'totalEkipe',
-            'totalNdeshje',
+
             'totalManagers',
+
+            'totalNdeshje',
+
             'totalStervitje',
-            'totalKlube',
-            'totalKampionate',
-            'sezoniAktiv',
+
+            'fitore',
+
+            'humbje',
+
+            'ndeshjePerfunduara',
+
+            'ndeshjePlanifikuara',
+
+            'totalRezultate',
+
+            'winRate',
+
             'ndeshjetEArdhshme',
-            'stervitjetEArdhshme'
+
+            'stervitjetEArdhshme',
+
+            'rezultatetEFundit',
+
+            'totalKontrata',
+
+            'totalPagesa',
+
+            'aktivitetetEFundit'
+
         ));
     }
 }

@@ -50,16 +50,20 @@ return Application::configure(
 
         );
 
-        // GUEST REDIRECT
+        // DYNAMIC LOGIN REDIRECT
 
         $middleware->redirectGuestsTo(
-            '/login'
+
+            fn () => route('login')
+
         );
 
-        // AUTHENTICATED REDIRECT
+        // DASHBOARD REDIRECT
 
         $middleware->redirectUsersTo(
-            '/dashboard'
+
+            fn () => route('dashboard')
+
         );
 
     })

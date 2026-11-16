@@ -1,150 +1,200 @@
 <!DOCTYPE html>
-<html lang="sq">
+<html lang="sq" data-theme="light">
+
 <head>
 
     <meta charset="UTF-8">
+
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{{ asset('css/club-ui.css') }}">
+    <meta name="csrf-token"
+          content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'KV Gjinoci')</title>
+    <meta name="theme-color"
+          content="#101e38">
+
+    <title>
+        @yield('title', 'KV Gjinoci')
+    </title>
+
+    {{-- FAVICON --}}
+
+    @if(file_exists(public_path('images/logo.png')))
+
+        <link rel="icon"
+              type="image/png"
+              href="{{ asset('images/logo.png') }}">
+
+    @endif
+
+    {{-- LIGHT MODE ONLY --}}
+
+    <script>
+        (function () {
+
+            // Largo preferencen e vjeter Dark Mode.
+
+            try {
+
+                localStorage.removeItem(
+                    'kv-gjinoci-theme'
+                );
+
+            } catch (error) {
+
+                // Aplikacioni vazhdon normalisht.
+
+            }
+
+            // Perdore vetem Light Mode.
+
+            document.documentElement.setAttribute(
+                'data-theme',
+                'light'
+            );
+
+        })();
+    </script>
+
+    {{-- GLOBAL CSS --}}
+
+    <link rel="stylesheet"
+          href="{{ asset('css/club-ui.css') }}">
+
+    {{-- LIGHT MODE STYLES --}}
 
     <style>
-        * { box-sizing: border-box; }
 
+        :root {
+
+            color-scheme: light;
+
+            --ui-bg: #f1f5f9;
+            --ui-surface: #ffffff;
+            --ui-text: #172b4d;
+            --ui-muted: #64748b;
+            --ui-border: #e2e8f0;
+            --ui-primary: #253858;
+
+        }
+
+        html,
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f3f5f9;
+
+            color-scheme: light;
+
+            background: #f1f5f9;
+
+        }
+
+        .ui-content {
+
+            min-height: calc(100vh - 140px);
+
             color: #172b4d;
+
         }
 
-        header {
-            background: #172b4d;
-            color: white;
-            padding: 22px 35px;
+        /* Sidebar dhe topbar mbesin origjinale */
+
+        .ui-main {
+
+            background: #f1f5f9;
+
         }
 
-        header h2 { margin: 0 0 15px; }
+        /* Hiqe butonin Dark Mode */
 
-        nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 18px;
+        #themeToggle {
+
+            display: none !important;
+
         }
 
-        nav a {
-            color: white;
-            text-decoration: none;
+        /* Siguro qe kontrollet jane ne Light Mode */
+
+        input,
+        select,
+        textarea {
+
+            color-scheme: light;
+
         }
 
-        main {
-            max-width: 1150px;
-            margin: 35px auto;
-            padding: 0 20px;
+        /* Mos ndrysho pamjen e fotove */
+
+        .ui-content img {
+
+            max-width: 100%;
+
         }
 
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
-            margin-top: 12px;
-            margin-bottom: 5px;
-        }
-
-        input, select {
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            width: 100%;
-        }
-
-        input[type="checkbox"] {
-            width: auto;
-        }
-
-        button, .btn {
-            display: inline-block;
-            background: #253858;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 6px;
-            border: 0;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .danger { background: #b91c1c; }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 13px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-
-        th {
-            background: #253858;
-            color: white;
-        }
-
-        .fields {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-
-        .actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .club-list {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-        }
-
-        .success { color: #15803d; }
-        .error { color: #b91c1c; }
-
-        @media (max-width: 700px) {
-            .fields, .club-list {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
+
+    {{-- MODULE STYLES --}}
+
+    @yield('styles')
+
+    @stack('styles')
+
 </head>
+
 <body>
 
-@include('partials.navbar')
+<div class="ui-shell" id="clubShell">
 
-<main>
-    @if(session('success'))
-        <p class="success">{{ session('success') }}</p>
-    @endif
+    {{-- SIDEBAR --}}
 
-    @if($errors->any())
-        <ul class="error">
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    @endif
+    @include('partials.sidebar')
 
-    @yield('content')
-</main>
+    {{-- MOBILE OVERLAY --}}
+
+    <div class="ui-overlay"
+         id="sidebarOverlay"
+         aria-hidden="true">
+    </div>
+
+    {{-- MAIN APPLICATION --}}
+
+    <div class="ui-main">
+
+        {{-- TOPBAR --}}
+
+        @include('partials.topbar')
+
+        {{-- PAGE CONTENT --}}
+
+        <main class="ui-content">
+
+            @yield('content')
+
+        </main>
+
+        {{-- FOOTER --}}
+
+        <footer class="ui-footer">
+
+            © {{ date('Y') }} KV Gjinoci
+
+            · Volleyball Management System
+
+        </footer>
+
+    </div>
+
+</div>
+
+{{-- GLOBAL JAVASCRIPT --}}
+
+<script src="{{ asset('js/club-ui.js') }}"></script>
+
+{{-- MODULE JAVASCRIPT --}}
+
+@yield('scripts')
+
+@stack('scripts')
 
 </body>
+
 </html>

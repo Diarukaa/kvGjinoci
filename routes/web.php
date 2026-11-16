@@ -43,15 +43,21 @@ Route::get('/', function () {
 
 Route::middleware('guest')->group(function () {
 
-    Route::get('/login', [
-        LoginController::class,
-        'show'
-    ])->name('login');
+    Route::get(
+        config('security.login_path'),
+        [
+            LoginController::class,
+            'show'
+        ]
+    )->name('login');
 
-    Route::post('/login', [
-        LoginController::class,
-        'login'
-    ])->middleware('throttle:30,1')
+    Route::post(
+        config('security.login_path'),
+        [
+            LoginController::class,
+            'login'
+        ]
+    )->middleware('throttle:30,1')
         ->name('login.store');
 
 });

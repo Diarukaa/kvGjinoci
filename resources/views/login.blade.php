@@ -594,7 +594,7 @@
             <!-- LOGIN FORM -->
 
             <form method="POST"
-                  action="{{ url('/login') }}">
+                  action="{{ route('login.store') }}">
 
                 @csrf
 
