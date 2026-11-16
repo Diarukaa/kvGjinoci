@@ -170,20 +170,21 @@
 
 $links = match($role) {
 
-    'admin' => array_merge(
+'admin' => array_merge(
 
-        [
-            ['Dashboard', 'dashboard', 'dashboard']
-        ],
+    [
+        ['Dashboard', 'dashboard', 'dashboard']
+    ],
 
-        $sharedLinks,
+    $sharedLinks,
 
-        [
-            ['Menaxheret', 'managers.index', 'managers.*'],
-            ['Perdoruesit', 'users.index', 'users.*']
-        ]
+    [
+        ['Menaxheret', 'managers.index', 'managers.*'],
+        ['Perdoruesit', 'users.index', 'users.*'],
+        ['Activity Log', 'activity.index', 'activity.*']
+    ]
 
-    ),
+),
 
     'manager' => array_merge(
 
@@ -243,6 +244,12 @@ $links = match($role) {
         'Profili Im',
         'profile.index',
         'profile.*'
+    ];
+
+    $links[] = [
+        'Sesionet Aktive',
+        'profile.sessions.index',
+        'profile.sessions.*'
     ];
 
 }

@@ -12,21 +12,26 @@ class RoleMiddleware
         Request $request,
         Closure $next,
         string ...$roles
-    ): Response
-    {
-        if (!$request->user()) {
+    ): Response {
+
+        $user = $request->user();
+
+        if (!$user) {
 
             return redirect()->route('login');
 
         }
 
         if (!in_array(
-            $request->user()->role,
+            $user->role,
             $roles,
             true
         )) {
 
-            abort(403, 'Nuk ke leje per kete faqe.');
+            abort(
+                403,
+                'Nuk ke leje per kete faqe.'
+            );
 
         }
 

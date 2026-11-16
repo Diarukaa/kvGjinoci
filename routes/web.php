@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 use App\Http\Middleware\RoleMiddleware;
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ManagerDashboardController;
 use App\Http\Controllers\CoachDashboardController;
@@ -34,93 +34,35 @@ use App\Http\Controllers\UserController;
 // FAQJA KRYESORE
 
 Route::get('/', function () {
+
     return view('welcome');
+
 });
 
-// LOGIN
+// LOGIN SECURITY
 
 Route::middleware('guest')->group(function () {
 
-    Route::get('/login', function () {
+    Route::get('/login', [
+        LoginController::class,
+        'show'
+    ])->name('login');
 
-        return response()
-            ->view('login')
-            ->header(
-                'Cache-Control',
-                'no-store, no-cache, must-revalidate, max-age=0'
-            )
-            ->header('Pragma', 'no-cache')
-            ->header('Expires', '0');
-
-    })->name('login');
-
-    Route::post('/login', function (Request $request) {
-
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string'],
-        ]);
-
-        if (Auth::attempt($credentials)) {
-
-            $request->session()->regenerate();
-
-            if (!in_array(Auth::user()->role, [
-                'admin',
-                'manager',
-                'coach',
-                'player',
-            ], true)) {
-
-                Auth::logout();
-
-                $request->session()->invalidate();
-
-                $request->session()->regenerateToken();
-
-                return back()->withErrors([
-                    'email' => 'Llogaria jote ende nuk eshte aktivizuar.',
-                ])->onlyInput('email');
-
-            }
-
-            if (Auth::user()->role === 'admin') {
-
-                return redirect()->intended(
-                    route('dashboard')
-                );
-
-            }
-
-            $request->session()->forget('url.intended');
-
-            return redirect()->route('dashboard');
-
-        }
-
-        return back()->withErrors([
-            'email' => 'Emaili ose fjalekalimi eshte gabim.',
-        ])->onlyInput('email');
-
-    })->middleware('throttle:5,1')->name('login.store');
+    Route::post('/login', [
+        LoginController::class,
+        'login'
+    ])->middleware('throttle:30,1')
+        ->name('login.store');
 
 });
 
 // LOGOUT
 
-Route::post('/logout', function (Request $request) {
-
-    Auth::logout();
-
-    $request->session()->invalidate();
-
-    $request->session()->regenerateToken();
-
-    return redirect()
-        ->route('login')
-        ->with('success', 'Ke dale me sukses nga sistemi.');
-
-})->middleware('auth')->name('logout');
+Route::post('/logout', [
+    LoginController::class,
+    'logout'
+])->middleware('auth')
+    ->name('logout');
 
 // DASHBOARD SIPAS ROLIT
 
@@ -133,13 +75,22 @@ Route::get('/dashboard', function (Request $request) {
             'index'
         ]),
 
-        'manager' => redirect()->route('manager.dashboard'),
+        'manager' => redirect()->route(
+            'manager.dashboard'
+        ),
 
-        'coach' => redirect()->route('coach.dashboard'),
+        'coach' => redirect()->route(
+            'coach.dashboard'
+        ),
 
-        'player' => redirect()->route('player.dashboard'),
+        'player' => redirect()->route(
+            'player.dashboard'
+        ),
 
-        default => abort(403, 'Llogaria nuk eshte aktive.')
+        default => abort(
+            403,
+            'Llogaria nuk eshte aktive.'
+        )
 
     };
 
@@ -160,120 +111,127 @@ Route::get('/manager/dashboard', [
 Route::middleware([
     'auth',
     RoleMiddleware::class . ':player'
-])->prefix('player')->name('player.')->group(function () {
+])->prefix('player')
+    ->name('player.')
+    ->group(function () {
 
-    Route::get('/dashboard', [
-        PlayerDashboardController::class,
-        'index'
-    ])->name('dashboard');
+        Route::get('/dashboard', [
+            PlayerDashboardController::class,
+            'index'
+        ])->name('dashboard');
 
-});
+    });
 
 // TRAJNERI
 
 Route::middleware([
     'auth',
     RoleMiddleware::class . ':coach'
-])->prefix('coach')->name('coach.')->group(function () {
+])->prefix('coach')
+    ->name('coach.')
+    ->group(function () {
 
-    // DASHBOARD
+        // DASHBOARD
 
-    Route::get('/dashboard', [
-        CoachDashboardController::class,
-        'index'
-    ])->name('dashboard');
+        Route::get('/dashboard', [
+            CoachDashboardController::class,
+            'index'
+        ])->name('dashboard');
 
-    // NDESHJET
+        // NDESHJET
 
-    Route::get('/ndeshjet', [
-        CoachSportController::class,
-        'ndeshjet'
-    ])->name('ndeshjet');
+        Route::get('/ndeshjet', [
+            CoachSportController::class,
+            'ndeshjet'
+        ])->name('ndeshjet');
 
-    Route::get('/ndeshjet/create', [
-        CoachMatchController::class,
-        'create'
-    ])->name('ndeshjet.create');
+        Route::get('/ndeshjet/create', [
+            CoachMatchController::class,
+            'create'
+        ])->name('ndeshjet.create');
 
-    Route::post('/ndeshjet', [
-        CoachMatchController::class,
-        'store'
-    ])->name('ndeshjet.store');
+        Route::post('/ndeshjet', [
+            CoachMatchController::class,
+            'store'
+        ])->name('ndeshjet.store');
 
-    Route::get('/ndeshjet/{ndeshja}/edit', [
-        CoachMatchController::class,
-        'edit'
-    ])->name('ndeshjet.edit');
+        Route::get('/ndeshjet/{ndeshja}/edit', [
+            CoachMatchController::class,
+            'edit'
+        ])->name('ndeshjet.edit');
 
-    Route::put('/ndeshjet/{ndeshja}', [
-        CoachMatchController::class,
-        'update'
-    ])->name('ndeshjet.update');
+        Route::put('/ndeshjet/{ndeshja}', [
+            CoachMatchController::class,
+            'update'
+        ])->name('ndeshjet.update');
 
-    // STATISTIKAT
+        // STATISTIKAT
 
-    Route::get('/ndeshjet/{ndeshja}/statistikat', [
-        CoachSportController::class,
-        'statistikat'
-    ])->name('statistikat');
+        Route::get('/ndeshjet/{ndeshja}/statistikat', [
+            CoachSportController::class,
+            'statistikat'
+        ])->name('statistikat');
 
-    Route::post('/ndeshjet/{ndeshja}/statistikat', [
-        CoachSportController::class,
-        'ruajStatistikat'
-    ])->name('statistikat.store');
+        Route::post('/ndeshjet/{ndeshja}/statistikat', [
+            CoachSportController::class,
+            'ruajStatistikat'
+        ])->name('statistikat.store');
 
-    Route::delete('/ndeshjet/{ndeshja}/statistikat/{statistika}', [
-        CoachSportController::class,
-        'fshiStatistikat'
-    ])->name('statistikat.destroy');
+        Route::delete(
+            '/ndeshjet/{ndeshja}/statistikat/{statistika}',
+            [
+                CoachSportController::class,
+                'fshiStatistikat'
+            ]
+        )->name('statistikat.destroy');
 
-    // PERFORMANCE
+        // PERFORMANCE
 
-    Route::get('/performance', [
-        CoachPerformanceController::class,
-        'index'
-    ])->name('performance');
+        Route::get('/performance', [
+            CoachPerformanceController::class,
+            'index'
+        ])->name('performance');
 
-    // STERVITJET
+        // STERVITJET
 
-    Route::get('/stervitjet', [
-        CoachTrainingController::class,
-        'index'
-    ])->name('stervitjet');
+        Route::get('/stervitjet', [
+            CoachTrainingController::class,
+            'index'
+        ])->name('stervitjet');
 
-    Route::get('/stervitjet/create', [
-        CoachTrainingController::class,
-        'create'
-    ])->name('stervitjet.create');
+        Route::get('/stervitjet/create', [
+            CoachTrainingController::class,
+            'create'
+        ])->name('stervitjet.create');
 
-    Route::post('/stervitjet', [
-        CoachTrainingController::class,
-        'store'
-    ])->name('stervitjet.store');
+        Route::post('/stervitjet', [
+            CoachTrainingController::class,
+            'store'
+        ])->name('stervitjet.store');
 
-    Route::get('/stervitjet/{stervitja}/edit', [
-        CoachTrainingController::class,
-        'edit'
-    ])->name('stervitjet.edit');
+        Route::get('/stervitjet/{stervitja}/edit', [
+            CoachTrainingController::class,
+            'edit'
+        ])->name('stervitjet.edit');
 
-    Route::put('/stervitjet/{stervitja}', [
-        CoachTrainingController::class,
-        'update'
-    ])->name('stervitjet.update');
+        Route::put('/stervitjet/{stervitja}', [
+            CoachTrainingController::class,
+            'update'
+        ])->name('stervitjet.update');
 
-    // PREZENCA
+        // PREZENCA
 
-    Route::get('/stervitjet/{stervitja}/prezenca', [
-        CoachTrainingController::class,
-        'prezenca'
-    ])->name('prezenca.edit');
+        Route::get('/stervitjet/{stervitja}/prezenca', [
+            CoachTrainingController::class,
+            'prezenca'
+        ])->name('prezenca.edit');
 
-    Route::put('/stervitjet/{stervitja}/prezenca', [
-        CoachTrainingController::class,
-        'ruajPrezencen'
-    ])->name('prezenca.update');
+        Route::put('/stervitjet/{stervitja}/prezenca', [
+            CoachTrainingController::class,
+            'ruajPrezencen'
+        ])->name('prezenca.update');
 
-});
+    });
 
 // VETEM ADMINISTRATORI
 
@@ -342,20 +300,29 @@ Route::middleware([
 
     // STATISTIKAT INDIVIDUALE
 
-    Route::get('/ndeshjet/{ndeshja}/statistikat/create', [
-        StatistikaLojtaritController::class,
-        'create'
-    ])->name('statistikat-lojtareve.create');
+    Route::get(
+        '/ndeshjet/{ndeshja}/statistikat/create',
+        [
+            StatistikaLojtaritController::class,
+            'create'
+        ]
+    )->name('statistikat-lojtareve.create');
 
-    Route::post('/ndeshjet/{ndeshja}/statistikat', [
-        StatistikaLojtaritController::class,
-        'store'
-    ])->name('statistikat-lojtareve.store');
+    Route::post(
+        '/ndeshjet/{ndeshja}/statistikat',
+        [
+            StatistikaLojtaritController::class,
+            'store'
+        ]
+    )->name('statistikat-lojtareve.store');
 
-    Route::delete('/ndeshjet/{ndeshja}/statistikat/{statistika}', [
-        StatistikaLojtaritController::class,
-        'destroy'
-    ])->name('statistikat-lojtareve.destroy');
+    Route::delete(
+        '/ndeshjet/{ndeshja}/statistikat/{statistika}',
+        [
+            StatistikaLojtaritController::class,
+            'destroy'
+        ]
+    )->name('statistikat-lojtareve.destroy');
 
     // PERFORMANCE
 
@@ -427,15 +394,21 @@ Route::middleware([
         'store'
     ])->name('liga.store');
 
-    Route::put('/kampionatet/{kampionati}/liga/{ndeshja}', [
-        NdeshjaLigesController::class,
-        'update'
-    ])->name('liga.update');
+    Route::put(
+        '/kampionatet/{kampionati}/liga/{ndeshja}',
+        [
+            NdeshjaLigesController::class,
+            'update'
+        ]
+    )->name('liga.update');
 
-    Route::delete('/kampionatet/{kampionati}/liga/{ndeshja}', [
-        NdeshjaLigesController::class,
-        'destroy'
-    ])->name('liga.destroy');
+    Route::delete(
+        '/kampionatet/{kampionati}/liga/{ndeshja}',
+        [
+            NdeshjaLigesController::class,
+            'destroy'
+        ]
+    )->name('liga.destroy');
 
     // LIDHJA ME LIGEN
 
@@ -482,3 +455,4 @@ require __DIR__ . '/njoftimet.php';
 require __DIR__ . '/kalendari.php';
 require __DIR__ . '/raportet.php';
 require __DIR__ . '/profile.php';
+require __DIR__ . '/activity.php';
