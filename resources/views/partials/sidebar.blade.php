@@ -19,15 +19,10 @@
     );
 
     $dashboardRoute = match ($role) {
-
         'manager' => 'manager.dashboard',
-
         'coach' => 'coach.dashboard',
-
         'player' => 'player.dashboard',
-
         default => 'dashboard',
-
     };
 
     $groups = [
@@ -89,6 +84,13 @@
                 'ndeshjet.index',
                 'ndeshjet.*',
                 '🏐'
+            ],
+
+            [
+                'Formacionet 6+1',
+                'formacionet.lista',
+                'formacionet.*',
+                '▦'
             ],
 
             [
@@ -160,16 +162,13 @@
         if ($role === 'manager') {
 
             $groups['FINANCE'][] = [
-
                 'Financat e Mia',
                 'financat.mine',
                 'financat.mine',
                 '€'
-
             ];
 
         }
-
     }
 
     if ($role === 'coach') {
@@ -181,6 +180,13 @@
                 'coach.ndeshjet',
                 'coach.ndeshjet*',
                 '🏐'
+            ],
+
+            [
+                'Formacionet 6+1',
+                'formacionet.lista',
+                'formacionet.*',
+                '▦'
             ],
 
             [
@@ -209,7 +215,6 @@
             ],
 
         ];
-
     }
 
     if ($role === 'player') {
@@ -224,7 +229,6 @@
             ],
 
         ];
-
     }
 
     if ($role === 'admin') {
@@ -253,7 +257,6 @@
             ],
 
         ];
-
     }
 
     $groups['REPORTS'] = [
@@ -289,19 +292,19 @@
 
 <aside class="ui-sidebar" id="clubSidebar">
 
-    {{-- BRAND --}}
-
-    <a href="{{ route($dashboardRoute) }}"
-       class="ui-brand">
+    <a
+        href="{{ route($dashboardRoute) }}"
+        class="ui-brand"
+    >
 
         <div class="ui-brand-logo">
 
-            @if(file_exists(
-                public_path('images/logo.png')
-            ))
+            @if(file_exists(public_path('images/logo.png')))
 
-                <img src="{{ asset('images/logo.png') }}"
-                     alt="KV Gjinoci">
+                <img
+                    src="{{ asset('images/logo.png') }}"
+                    alt="KV Gjinoci"
+                >
 
             @else
 
@@ -314,33 +317,32 @@
         <div class="ui-brand-text">
 
             <div class="ui-brand-name">
-
                 KV Gjinoci
-
             </div>
 
-            <small>VOLLEYBALL CLUB</small>
+            <small>
+                VOLLEYBALL CLUB
+            </small>
 
         </div>
 
     </a>
 
-    {{-- NAVIGATION --}}
-
-    <nav class="ui-sidebar-scroll"
-         aria-label="Menu kryesore">
+    <nav
+        class="ui-sidebar-scroll"
+        aria-label="Menu kryesore"
+    >
 
         @foreach($groups as $group => $links)
 
             @php
-
                 $availableLinks = collect($links)
-                    ->filter(fn ($link) =>
-                        \Illuminate\Support\Facades\Route::has(
-                            $link[1]
-                        )
+                    ->filter(
+                        fn ($link) =>
+                            \Illuminate\Support\Facades\Route::has(
+                                $link[1]
+                            )
                     );
-
             @endphp
 
             @if($availableLinks->isNotEmpty())
@@ -348,33 +350,31 @@
                 <div class="ui-menu-group">
 
                     <div class="ui-menu-label">
-
                         {{ $group }}
-
                     </div>
 
                     @foreach($availableLinks as $link)
 
-                        <a href="{{ route($link[1]) }}"
-                           class="ui-menu-link
-                               {{ request()->routeIs($link[2])
-                                   ? 'is-active'
-                                   : '' }}"
-                           @if(request()->routeIs($link[2]))
-                               aria-current="page"
-                            @endif>
+                        <a
+                            href="{{ route($link[1]) }}"
+                            class="ui-menu-link
+                                {{ request()->routeIs($link[2])
+                                    ? 'is-active'
+                                    : '' }}"
+                            @if(request()->routeIs($link[2]))
+                                aria-current="page"
+                            @endif
+                        >
 
-                            <span class="ui-menu-icon"
-                                  aria-hidden="true">
-
+                            <span
+                                class="ui-menu-icon"
+                                aria-hidden="true"
+                            >
                                 {{ $link[3] }}
-
                             </span>
 
                             <span class="ui-menu-text">
-
                                 {{ $link[0] }}
-
                             </span>
 
                         </a>
@@ -389,36 +389,30 @@
 
     </nav>
 
-    {{-- LOGOUT --}}
-
     <div class="ui-sidebar-bottom">
 
         <div class="ui-sidebar-role">
-
             {{ strtoupper(
                 $roleLabels[$role] ?? 'Perdorues'
             ) }}
-
         </div>
 
-        <form method="POST"
-              action="{{ route('logout') }}">
-
+        <form
+            method="POST"
+            action="{{ route('logout') }}"
+        >
             @csrf
 
-            <button type="submit"
-                    class="ui-logout">
-
+            <button
+                type="submit"
+                class="ui-logout"
+            >
                 <span class="ui-menu-icon">
-
                     ↪
-
                 </span>
 
                 Dil nga Sistemi
-
             </button>
-
         </form>
 
     </div>

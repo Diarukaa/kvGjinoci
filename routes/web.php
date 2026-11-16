@@ -462,3 +462,5 @@ require __DIR__ . '/kalendari.php';
 require __DIR__ . '/raportet.php';
 require __DIR__ . '/profile.php';
 require __DIR__ . '/activity.php';
+
+require __DIR__ . '/formacionet.php';
