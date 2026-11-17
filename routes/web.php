@@ -465,3 +465,7 @@ require __DIR__ . '/activity.php';
 
 require __DIR__ . '/formacionet.php';
 require __DIR__ . '/match-center.php';
+
+require __DIR__ . '/ndeshjet-v2.php';
+
+require __DIR__ . '/paneli-klubit.php';
