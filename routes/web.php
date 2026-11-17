@@ -464,3 +464,4 @@ require __DIR__ . '/profile.php';
 require __DIR__ . '/activity.php';
 
 require __DIR__ . '/formacionet.php';
+require __DIR__ . '/match-center.php';

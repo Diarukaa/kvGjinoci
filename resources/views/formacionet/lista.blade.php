@@ -9,6 +9,7 @@
             max-width: 1400px;
             margin: 0 auto;
             color: #172b4d;
+            font-family: Arial, sans-serif;
         }
 
         .lineups-page * {
@@ -17,49 +18,47 @@
 
         .lineups-hero {
             background: linear-gradient(
-                120deg,
-                #101e38,
-                #315b89
+                120deg, #101e38, #315b89
             );
             border-radius: 18px;
-            padding: 32px;
+            padding: 30px;
             color: white;
             margin-bottom: 25px;
         }
 
         .lineups-hero small {
+            color: #bfdbfe;
             font-size: 11px;
             font-weight: bold;
             letter-spacing: 1.4px;
-            color: #bfdbfe;
         }
 
         .lineups-hero h1 {
-            font-size: 30px;
             color: white;
-            margin: 14px 0;
+            font-size: 29px;
+            margin: 13px 0;
         }
 
         .lineups-hero p {
-            font-size: 14px;
             color: #dbeafe;
+            font-size: 13px;
             line-height: 1.7;
             margin: 0;
         }
 
         .lineups-summary {
             display: flex;
-            gap: 12px;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            margin-bottom: 23px;
+            gap: 15px;
+            margin-bottom: 22px;
         }
 
         .lineups-summary h2 {
-            margin: 0;
-            font-size: 23px;
             color: #172b4d;
+            font-size: 22px;
+            margin: 0;
         }
 
         .lineups-count {
@@ -67,19 +66,20 @@
             color: #253858;
             padding: 10px 14px;
             border-radius: 9px;
-            font-weight: bold;
-            font-size: 13px;
+            font-size: 12px;
+            font-weight: 700;
         }
 
         .lineups-grid {
             display: grid;
-            grid-template-columns:
-            repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(
+            3, minmax(0, 1fr)
+        );
             gap: 20px;
         }
 
         .lineup-card {
-            background: #fff;
+            background: white;
             border: 1px solid #e2e8f0;
             border-radius: 16px;
             overflow: hidden;
@@ -88,46 +88,43 @@
 
         .lineup-card-head {
             background: linear-gradient(
-                125deg,
-                #172b4d,
-                #315b89
+                125deg, #172b4d, #315b89
             );
-            padding: 23px;
+            padding: 22px;
             color: white;
         }
 
         .lineup-card-head small {
             color: #bfdbfe;
             font-size: 11px;
-            font-weight: bold;
         }
 
         .lineup-card-head h3 {
             color: white;
-            margin: 11px 0 8px;
-            font-size: 20px;
+            font-size: 19px;
             line-height: 1.4;
+            margin: 10px 0 7px;
             overflow-wrap: anywhere;
         }
 
         .lineup-card-head p {
             color: #dbeafe;
-            font-size: 13px;
+            font-size: 12px;
             margin: 0;
             overflow-wrap: anywhere;
         }
 
         .lineup-card-body {
-            padding: 22px;
+            padding: 20px;
         }
 
         .lineup-detail {
             display: flex;
             justify-content: space-between;
-            gap: 15px;
+            gap: 12px;
             padding: 12px 0;
             border-bottom: 1px solid #edf2f7;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .lineup-detail span {
@@ -160,47 +157,68 @@
             color: #166534;
         }
 
-        .lineup-button {
-            display: block;
-            width: 100%;
-            text-align: center;
-            background: #253858;
-            color: white !important;
-            border-radius: 9px;
-            text-decoration: none !important;
-            padding: 13px 16px;
-            font-size: 13px;
-            font-weight: bold;
-            margin-top: 20px;
+        .lineup-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 18px;
         }
 
-        .lineup-button:hover {
-            background: #172b4d;
+        .lineup-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 45px;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #253858;
+            border-radius: 9px;
+            background: #253858;
+            color: white !important;
+            font-size: 12px;
+            font-weight: bold;
+            text-decoration: none !important;
+        }
+
+        .lineup-button.secondary {
+            background: #e8efff;
+            color: #253858 !important;
+            border-color: #dbe3ee;
+        }
+
+        .lineup-button.disabled {
+            background: #f1f5f9;
+            color: #94a3b8 !important;
+            border-color: #e2e8f0;
+            cursor: not-allowed;
         }
 
         .lineup-empty {
             grid-column: 1 / -1;
             background: white;
+            padding: 45px;
+            text-align: center;
             border: 1px solid #e2e8f0;
             border-radius: 16px;
-            padding: 55px 24px;
-            text-align: center;
-            color: #64748b;
         }
 
         .lineup-empty h2 {
             color: #172b4d;
-            margin: 15px 0;
+        }
+
+        .lineup-empty p {
+            color: #64748b;
         }
 
         .lineup-pagination {
-            margin-top: 25px;
+            margin-top: 24px;
         }
 
         @media (max-width: 1200px) {
             .lineups-grid {
-                grid-template-columns:
-                repeat(2, minmax(0, 1fr));
+                grid-template-columns: repeat(
+                2, minmax(0, 1fr)
+            );
             }
         }
 
@@ -210,11 +228,17 @@
             }
 
             .lineups-hero {
-                padding: 24px;
+                padding: 22px;
             }
 
             .lineups-hero h1 {
-                font-size: 25px;
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .lineup-actions {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -226,21 +250,16 @@
                 KV GJINOCI | TACTICAL MANAGEMENT
             </small>
 
-            <h1>
-                Formacionet Interaktive 6+1
-            </h1>
+            <h1>Formacionet Interaktive 6+1</h1>
 
             <p>
-                Zgjedh ndeshjen, cakto gjashte
-                lojtaret ne fushe dhe Liberon,
-                pastaj ruaje formacionin per secilin set.
+                Menaxho formacionet e seciles ndeshje,
+                kopjo setet dhe printo raportin A4.
             </p>
         </div>
 
         <div class="lineups-summary">
-            <h2>
-                Zgjedh Ndeshjen
-            </h2>
+            <h2>Zgjedh Ndeshjen</h2>
 
             <span class="lineups-count">
             {{ $ndeshjet->total() }} ndeshje
@@ -282,15 +301,18 @@
                             <span>Data</span>
 
                             <strong>
-                                {{ \Carbon\Carbon::parse(
-                                    $ndeshja->data_ndeshjes
-                                )->format('d.m.Y') }}
+                                @if($ndeshja->data_ndeshjes)
+                                    {{ \Carbon\Carbon::parse(
+                                        $ndeshja->data_ndeshjes
+                                    )->format('d.m.Y') }}
+                                @else
+                                    Pa date
+                                @endif
                             </strong>
                         </div>
 
                         <div class="lineup-detail">
                             <span>Statusi</span>
-
                             <strong>
                                 {{ $ndeshja->statusi }}
                             </strong>
@@ -298,7 +320,6 @@
 
                         <div class="lineup-detail">
                             <span>Palestra</span>
-
                             <strong>
                                 {{ $ndeshja->palestra
                                     ?: 'Pa caktuar' }}
@@ -307,56 +328,82 @@
 
                         <div class="lineup-detail">
                             <span>Setet e ruajtura</span>
-
                             <strong>
                                 {{ count($setet) }} / 5
                             </strong>
                         </div>
 
                         <div class="lineup-sets">
+
                             @foreach(range(1, 5) as $set)
+
                                 <span class="lineup-set
                                 {{ in_array($set, $setet)
                                     ? 'saved'
-                                    : '' }}">
+                                    : '' }}"
+                                >
                                 Seti {{ $set }}
 
                                     @if(in_array($set, $setet))
                                         ✓
                                     @endif
                             </span>
+
                             @endforeach
+
                         </div>
 
-                        <a
-                            href="{{ route(
-                            'formacionet.index',
-                            [
-                                'ndeshja' => $ndeshja->id
-                            ]
-                        ) }}"
-                            class="lineup-button"
-                        >
-                            🏐 Hape Formacionin
-                        </a>
+                        <div class="lineup-actions">
+
+                            <a
+                                href="{{ route(
+                                'formacionet.index',
+                                $ndeshja
+                            ) }}"
+                                class="lineup-button"
+                            >
+                                🏐 Formacioni
+                            </a>
+
+                            @if(count($setet) > 0)
+
+                                <a
+                                    href="{{ route(
+                                    'formacionet.print',
+                                    $ndeshja
+                                ) }}"
+                                    class="lineup-button secondary"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    🖨️ Raporti A4
+                                </a>
+
+                            @else
+
+                                <span
+                                    class="lineup-button disabled"
+                                    title="Ruaj fillimisht nje set"
+                                >
+                                🖨️ Raporti A4
+                            </span>
+
+                            @endif
+
+                        </div>
 
                     </div>
+
                 </article>
 
             @empty
 
                 <div class="lineup-empty">
-                    <div style="font-size:45px">
-                        🏐
-                    </div>
-
-                    <h2>
-                        Nuk ka ndeshje te regjistruara.
-                    </h2>
+                    <h2>Nuk ka ndeshje.</h2>
 
                     <p>
-                        Fillimisht krijo nje ndeshje
-                        te moduli Ndeshjet.
+                        Krijo fillimisht nje ndeshje
+                        nga moduli Ndeshjet.
                     </p>
                 </div>
 
