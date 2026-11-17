@@ -8,13 +8,9 @@ use App\Models\Lojtar;
 use App\Models\Manager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
-use Throwable;
 
 class UserController extends Controller
 {
@@ -55,63 +51,27 @@ class UserController extends Controller
     {
         $this->kontrolloAdminin();
 
-        $validated = $this->validimi($request);
+        DB::transaction(function () use ($request) {
 
-        $user = DB::transaction(function () use ($validated) {
+            $validated = $this->validimi($request);
 
             $user = new User();
 
             $user->name = $validated['name'];
             $user->email = $validated['email'];
-            $user->password = Hash::make(
-                $validated['password']
-            );
+            $user->password = $validated['password'];
             $user->role = $validated['role'];
 
             $this->lidheProfilin($user, $validated);
 
             $user->save();
-
-            return $user;
         });
-
-        // Emaili dergohet vetem pasi
-        // regjistrimi eshte ruajtur me sukses.
-
-        if ($user->role === 'pending') {
-
-            $emailSent = $this->dergoEmail(
-                $user,
-                'emails.account-pending',
-                'KV Gjinoci - Llogaria ne pritje'
-            );
-
-            $message = $emailSent
-                ? 'Perdoruesi u regjistrua me sukses. '
-                . 'Emaili per statusin ne pritje u procesua.'
-                : 'Perdoruesi u regjistrua me sukses, '
-                . 'por dergimi i emailit deshtoi.';
-
-        } else {
-
-            $emailSent = $this->dergoEmail(
-                $user,
-                'emails.welcome-user',
-                'Mire se erdhe ne KV Gjinoci'
-            );
-
-            $message = $emailSent
-                ? 'Perdoruesi u krijua me sukses. '
-                . 'Emaili i mireseardhjes u procesua.'
-                : 'Perdoruesi u krijua me sukses, '
-                . 'por dergimi i emailit deshtoi.';
-        }
 
         return redirect()
             ->route('users.index')
             ->with(
-                $emailSent ? 'success' : 'warning',
-                $message
+                'success',
+                'Perdoruesi u krijua me sukses.'
             );
     }
 
@@ -129,107 +89,56 @@ class UserController extends Controller
     {
         $this->kontrolloAdminin();
 
-        // Kjo variabel ruan informacionin
-        // nese llogaria u aktivizua.
+        DB::transaction(function () use ($request, $user) {
 
-        $activationData = DB::transaction(
-            function () use ($request, $user) {
+            // Kontrollo administratoret para ndryshimit.
 
-                $adminet = User::where('role', 'admin')
-                    ->orderBy('id')
-                    ->lockForUpdate()
-                    ->get();
+            $adminet = User::where('role', 'admin')
+                ->orderBy('id')
+                ->lockForUpdate()
+                ->get();
 
-                $user = User::lockForUpdate()
-                    ->findOrFail($user->id);
+            $user = User::lockForUpdate()
+                ->findOrFail($user->id);
 
-                $validated = $this->validimi(
-                    $request,
-                    $user
-                );
-
-                if (
-                    $user->id === auth()->id() &&
-                    $validated['role'] !== 'admin'
-                ) {
-                    throw ValidationException::withMessages([
-                        'role' =>
-                            'Nuk mund ta ndryshosh rolin e llogarise tende.'
-                    ]);
-                }
-
-                if (
-                    $user->role === 'admin' &&
-                    $validated['role'] !== 'admin' &&
-                    $adminet->count() <= 1
-                ) {
-                    throw ValidationException::withMessages([
-                        'role' =>
-                            'Sistemi duhet te kete te pakten nje administrator.'
-                    ]);
-                }
-
-                // Mbaje mend rolin e vjeter.
-                $oldRole = $user->role;
-
-                $user->name = $validated['name'];
-                $user->email = $validated['email'];
-                $user->role = $validated['role'];
-
-                if (!empty($validated['password'])) {
-                    $user->password = Hash::make(
-                        $validated['password']
-                    );
-                }
-
-                $this->lidheProfilin(
-                    $user,
-                    $validated
-                );
-
-                $user->save();
-
-                // Aktivizim quhet VETEM kalimi
-                // nga pending ne nje rol aktiv.
-
-                $wasActivated =
-                    $oldRole === 'pending' &&
-                    $user->role !== 'pending';
-
-                return [
-                    'user' => $user,
-                    'wasActivated' => $wasActivated,
-                ];
-            }
-        );
-
-        $user = $activationData['user'];
-        $wasActivated = $activationData['wasActivated'];
-
-        if ($wasActivated) {
-
-            // Email aktivizimi pas commit-it.
-
-            $emailSent = $this->dergoEmail(
-                $user,
-                'emails.account-activated',
-                'KV Gjinoci - Llogaria juaj u aktivizua'
+            $validated = $this->validimi(
+                $request,
+                $user
             );
 
-            return redirect()
-                ->route('users.index')
-                ->with(
-                    $emailSent ? 'success' : 'warning',
-                    $emailSent
-                        ? 'Perdoruesi u aktivizua me sukses. '
-                        . 'Emaili i aktivizimit u procesua.'
-                        : 'Perdoruesi u aktivizua me sukses, '
-                        . 'por dergimi i emailit deshtoi.'
-                );
-        }
+            if (
+                $user->id === auth()->id() &&
+                $validated['role'] !== 'admin'
+            ) {
+                throw ValidationException::withMessages([
+                    'role' =>
+                        'Nuk mund ta ndryshosh rolin e llogarise tende.'
+                ]);
+            }
 
-        // Per ndryshimet e zakonshme
-        // nuk dergohet email aktivizimi.
+            if (
+                $user->role === 'admin' &&
+                $validated['role'] !== 'admin' &&
+                $adminet->count() <= 1
+            ) {
+                throw ValidationException::withMessages([
+                    'role' =>
+                        'Sistemi duhet te kete te pakten nje administrator.'
+                ]);
+            }
+
+            $user->name = $validated['name'];
+            $user->email = $validated['email'];
+            $user->role = $validated['role'];
+
+            if (!empty($validated['password'])) {
+                $user->password = $validated['password'];
+            }
+
+            $this->lidheProfilin($user, $validated);
+
+            $user->save();
+        });
 
         return redirect()
             ->route('users.index')
@@ -281,83 +190,10 @@ class UserController extends Controller
             );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | EMAIL NOTIFICATIONS
-    |--------------------------------------------------------------------------
-    */
-
-    private function dergoEmail(
-        User $user,
-        string $view,
-        string $subject
-    ): bool {
-        try {
-
-            $loginUrl = route('login');
-
-            Mail::send(
-                $view,
-                [
-                    'userName' => $user->name,
-                    'userEmail' => $user->email,
-                    'userRole' => $this->emriRolit(
-                        $user->role
-                    ),
-                    'loginUrl' => $loginUrl,
-                ],
-                function ($message) use (
-                    $user,
-                    $subject
-                ) {
-                    $message
-                        ->to(
-                            $user->email,
-                            $user->name
-                        )
-                        ->subject($subject);
-                }
-            );
-
-            return true;
-
-        } catch (Throwable $exception) {
-
-            Log::error(
-                'KV Gjinoci user email failed.',
-                [
-                    'user_id' => $user->id,
-                    'view' => $view,
-                    'exception' => $exception,
-                ]
-            );
-
-            return false;
-        }
-    }
-
-    private function emriRolit(string $role): string
-    {
-        return match ($role) {
-
-            'admin' => 'Administrator',
-            'manager' => 'Menaxher',
-            'coach' => 'Trajner',
-            'player' => 'Volejbolliste',
-            'pending' => 'Ne pritje',
-
-            default => 'Perdorues',
-        };
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | FORM DATA
-    |--------------------------------------------------------------------------
-    */
-
     private function formData(User $user): array
     {
+        // Profilet e lidhura me llogari tjera.
+
         $perdoruesit = User::query()
             ->when(
                 $user->exists,
@@ -376,25 +212,19 @@ class UserController extends Controller
         $trajneret = Trajner::whereNotIn(
             'id',
             $perdoruesit->pluck('trajner_id')
-                ->filter()
-                ->values()
-                ->all()
+                ->filter()->values()->all()
         )->orderBy('emri')->get();
 
         $lojtaret = Lojtar::whereNotIn(
             'id',
             $perdoruesit->pluck('lojtar_id')
-                ->filter()
-                ->values()
-                ->all()
+                ->filter()->values()->all()
         )->orderBy('emri')->get();
 
         $menaxheret = Manager::whereNotIn(
             'id',
             $perdoruesit->pluck('manager_id')
-                ->filter()
-                ->values()
-                ->all()
+                ->filter()->values()->all()
         )->orderBy('emri')->get();
 
         $roles = [
@@ -414,22 +244,13 @@ class UserController extends Controller
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | VALIDATION
-    |--------------------------------------------------------------------------
-    */
-
     private function validimi(
         Request $request,
         ?User $user = null
     ): array {
         $userId = $user?->id;
 
-        $emailRule = Rule::unique(
-            'users',
-            'email'
-        );
+        $emailRule = Rule::unique('users', 'email');
 
         $trajnerRule = Rule::unique(
             'users',
@@ -547,16 +368,12 @@ class UserController extends Controller
         ]);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | PROFILE RELATIONSHIPS
-    |--------------------------------------------------------------------------
-    */
-
     private function lidheProfilin(
         User $user,
         array $validated
     ): void {
+        // Largo lidhjet qe nuk i takojne rolit aktual.
+
         $user->trajner_id = null;
         $user->lojtar_id = null;
         $user->manager_id = null;
